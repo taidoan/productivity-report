@@ -1,38 +1,9 @@
+import { formatTime, formatTimeNumber } from "./numberFunctions";
 const Table = ({ data, service, takings }) => {
-  function formatTime(timeString) {
-    // Split the time string into minutes and seconds
-    const [minutesPart, secondsPart] = timeString.split(".");
-
-    // Parse minutes and seconds as integers
-    const minutes = parseInt(minutesPart, 10);
-    const seconds = parseInt(secondsPart, 10);
-
-    if (!isNaN(minutes) && !isNaN(seconds)) {
-      // Use padStart to ensure two-digit format for minutes and seconds
-      const formattedTime = `${String(minutes).padStart(2, "0")}:${String(
-        seconds
-      ).padStart(2, "0")}`;
-      return formattedTime;
-    } else {
-      return "Invalid Time";
-    }
-  }
-
-  function formatTimeNumber(timeNumber) {
-    if (typeof timeNumber === "number" && !isNaN(timeNumber)) {
-      const timeString = timeNumber.toFixed(2); // Convert to string with two decimal places
-      const [minutes, seconds] = timeString.split("."); // Split minutes and seconds
-      const formattedMinutes = String(minutes).padStart(2, "0");
-      const formattedSeconds = String(seconds).padEnd(2, "0"); // Ensure two digits for seconds
-      return `${formattedMinutes}:${formattedSeconds}`;
-    } else {
-      return "Invalid Time";
-    }
-  }
-
   return (
     <div>
-      {/* Table for data */}
+      <h1>Kitchen Productivity Report</h1>
+      <p>Product report</p>
       <table className="productivity-table">
         <thead>
           <tr>
@@ -86,7 +57,6 @@ const Table = ({ data, service, takings }) => {
 
       <br />
 
-      {/* Table for serviceObject */}
       <table className="productivity-table">
         <thead>
           <tr>

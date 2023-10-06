@@ -21,9 +21,6 @@ const productivityData = (copiedProdData) => {
   for (let i = 2; i < lines.length; i++) {
     let line = lines[i];
     const values = line.split(/\s+/);
-    for (let j = 0; j < values.length - 1; j++) {
-      values[j] = values[j];
-    }
 
     const object = {};
     object["ID"] = idCounter++;
