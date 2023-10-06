@@ -1,13 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@200;300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap");
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Archivo", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 2em;
+}
+
+h1 {
+  font-family: "Poppins";
+  font-weight: 700;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+
+p.intro {
+  margin-top: 0;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.productivity-form {
+  background-color: rgb(232, 232, 232);
+  border-radius: 1rem;
+  display: block;
+  display: grid;
+  margin-top: 2em;
+  padding: 1.5em;
+  width: 66%;
+
+  > label {
+    font-weight: 600;
+  }
+
+  > label:not(:first-of-type) {
+    margin-top: 1em;
+  }
+
+  > input,
+  > textarea {
+    border-radius: 0.5em;
+    font-family: "Archivo", "Inter", sans-serif;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+    padding: 1em;
+  }
+
+  > p:first-of-type {
+    margin-top: 0;
+  }
+
+  > button[type="submit"] {
+    font-family: "Archivo", "Inter", sans-serif;
+    font-weight: 600;
+    margin-top: 1.5em;
+    padding: 0.5em;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+}
+
+.productivity-table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+
+  > thead {
+    background-color: black;
+    color: white;
+    > tr > th {
+      font-weight: 800;
+      padding: 0.5em;
+    }
+  }
+
+  > tbody > tr > td {
+    border: 1px solid black;
+    padding: 0.5em;
+  }
 }
