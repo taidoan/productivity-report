@@ -67,7 +67,7 @@ const Table = ({ data, service, takings }) => {
             <th>Late Orders</th>
             <th>Items</th>
             <th>Manual Holds</th>
-            <th>Takings</th>
+            {takings && <th>Takings</th>}
           </tr>
         </thead>
         <tbody>
@@ -110,7 +110,7 @@ const Table = ({ data, service, takings }) => {
             <td>{service ? service.Late : "-"}</td>
             <td>{service ? service.Items : "-"}</td>
             <td>{service ? service.Holds : "-"}</td>
-            <td>£ {takings}</td>
+            {takings && <td>£ {takings}</td>}
           </tr>
         </tbody>
       </table>

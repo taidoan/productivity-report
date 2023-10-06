@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="title">Productivity Report</h1>
+      <h1 className="title">Productivity Report Generator</h1>
       <p className="intro">
         This is a tool to generate a productivity report for your kitchens using
         data from KSRS.

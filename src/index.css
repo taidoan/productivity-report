@@ -26,7 +26,7 @@ code {
 }
 
 .productivity-form {
-  background-color: rgb(232, 232, 232);
+  background-color: rgb(238, 238, 238);
   border-radius: 1rem;
   display: block;
   display: grid;
@@ -40,6 +40,12 @@ code {
 
   > label:not(:first-of-type) {
     margin-top: 1em;
+  }
+
+  .optional,
+  .required {
+    font-size: 0.9em;
+    font-weight: 400;
   }
 
   > input,

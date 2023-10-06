@@ -1,7 +1,6 @@
 const productivityData = (copiedProdData) => {
   if (typeof copiedProdData !== "string") {
-    // Handle the case where copiedProdData is not a valid string
-    return []; // Return an empty array or handle the error as needed
+    return [];
   }
 
   const lines = copiedProdData.trim().split("\n");
