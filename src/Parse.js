@@ -5,6 +5,8 @@ const productivityData = (copiedProdData) => {
   }
 
   const lines = copiedProdData.trim().split("\n");
+  const pubName = lines[0].split(" ");
+
   const prodHeaders = [
     "Station",
     "Name",
@@ -32,6 +34,11 @@ const productivityData = (copiedProdData) => {
 
     prodObjects.push(object);
   }
+
+  Object.assign(prodObjects, {
+    Pub: pubName[1],
+  });
+
   return prodObjects;
 };
 

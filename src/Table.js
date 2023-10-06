@@ -2,7 +2,7 @@ import { formatTime, formatTimeNumber } from "./numberFunctions";
 const Table = ({ data, service, takings }) => {
   return (
     <div>
-      <h1>Kitchen Productivity Report</h1>
+      <h1>{data.Pub} Kitchen Report</h1>
       <p>Product report</p>
       <table className="productivity-table">
         <thead>
