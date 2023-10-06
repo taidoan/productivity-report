@@ -5,6 +5,8 @@ const productivityData = (copiedProdData) => {
 
   const lines = copiedProdData.trim().split("\n");
   const pubName = lines[0].split(" ");
+  let rangeRemove = pubName.splice(3, 11);
+  const range = rangeRemove.join(" ");
 
   const prodHeaders = [
     "Station",
@@ -36,6 +38,7 @@ const productivityData = (copiedProdData) => {
 
   Object.assign(prodObjects, {
     Pub: pubName[1],
+    Range: range,
   });
 
   return prodObjects;
@@ -75,8 +78,6 @@ const serviceData = (copiedServiceData) => {
     Items: statsValues[3],
     Holds: statsValues[6],
   });
-
-  console.log(serviceTimes);
 
   return serviceTimes;
 };

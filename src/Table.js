@@ -3,7 +3,7 @@ const Table = ({ data, service, takings }) => {
   return (
     <div className="report">
       <h1>{data.Pub} Kitchen Report</h1>
-      <p>Product report</p>
+      <p>{data.Range}</p>
       <table className="productivity-table">
         <thead>
           <tr>
