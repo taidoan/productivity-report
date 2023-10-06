@@ -20,11 +20,10 @@ const Table = ({ data, service, takings }) => {
 
   function formatTimeNumber(timeNumber) {
     if (typeof timeNumber === "number" && !isNaN(timeNumber)) {
-      const minutes = Math.floor(timeNumber);
-      const seconds = Math.round((timeNumber - minutes) * 60); // Convert decimal part to seconds and round
-
+      const timeString = timeNumber.toFixed(2); // Convert to string with two decimal places
+      const [minutes, seconds] = timeString.split("."); // Split minutes and seconds
       const formattedMinutes = String(minutes).padStart(2, "0");
-      const formattedSeconds = String(seconds).padStart(2, "0");
+      const formattedSeconds = String(seconds).padEnd(2, "0"); // Ensure two digits for seconds
       return `${formattedMinutes}:${formattedSeconds}`;
     } else {
       return "Invalid Time";
@@ -42,6 +41,7 @@ const Table = ({ data, service, takings }) => {
             <th>Orders</th>
             <th>Items</th>
             <th>Late Orders</th>
+            <th>Late Percentage</th>
             <th>Longest Order</th>
             <th>Hours Worked</th>
           </tr>
@@ -50,10 +50,33 @@ const Table = ({ data, service, takings }) => {
           {data.map((item) => (
             <tr key={item.ID}>
               <td>{item.Name}</td>
-              <td>{formatTime(item.Prep)}</td>
+              <td
+                style={{
+                  backgroundColor:
+                    formatTime(item.Prep) <= "07:59"
+                      ? "lime"
+                      : formatTime(item.Prep) <= "08:59"
+                      ? "orange"
+                      : "red",
+                }}
+              >
+                {formatTime(item.Prep)}
+              </td>
               <td>{item.Orders}</td>
               <td>{item.Items}</td>
               <td>{item.Late}</td>
+              <td
+                style={{
+                  backgroundColor:
+                    Math.round((item.Late / item.Orders) * 100) <= 20
+                      ? "lime"
+                      : Math.round((item.Late / item.Orders) * 100) <= 24
+                      ? "orange"
+                      : "red",
+                }}
+              >
+                {Math.round((item.Late / item.Orders) * 100)}%
+              </td>
               <td>{formatTime(item.Longest)}</td>
               <td>{item.Hours}</td>
             </tr>
@@ -79,14 +102,36 @@ const Table = ({ data, service, takings }) => {
         </thead>
         <tbody>
           <tr>
-            <td>{service ? formatTimeNumber(service.Prep) : "-"}</td>
-            <td>{service ? formatTimeNumber(service.Wait) : "-"}</td>
             <td
               style={{
                 backgroundColor:
-                  formatTimeNumber(service.Delivery) > "05:00"
+                  formatTimeNumber(service.Prep) <= "07:59"
+                    ? "green"
+                    : formatTimeNumber(service.Prep) <= "08:59"
+                    ? "orange"
+                    : "red",
+              }}
+            >
+              {service ? formatTimeNumber(service.Prep) : "-"}
+            </td>
+            <td
+              style={{
+                backgroundColor:
+                  formatTimeNumber(service.Wait) < "01:00"
+                    ? "lime"
+                    : formatTimeNumber(service.Wait) < "01:29"
+                    ? "orange"
+                    : "red",
+              }}
+            >
+              {service ? formatTimeNumber(service.Wait) : "-"}
+            </td>
+            <td
+              style={{
+                backgroundColor:
+                  formatTimeNumber(service.Delivery) >= "10:00"
                     ? "red"
-                    : "transparent",
+                    : "lime",
               }}
             >
               {formatTimeNumber(service.Delivery)}
