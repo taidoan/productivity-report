@@ -4,9 +4,25 @@ const productivityData = (copiedProdData) => {
   }
 
   const lines = copiedProdData.trim().split("\n");
-  const pubName = lines[0].split(" ");
-  let rangeRemove = pubName.splice(3, 11);
-  const range = rangeRemove.join(" ");
+  const firstLine = lines[0];
+  const regex = /\*\*(.*?)\*\*/g;
+  const matches = firstLine.match(regex);
+  const parts = firstLine.split("**.");
+  const dateRange = parts[parts.length - 1].trim();
+
+  const prodObjects = [];
+  Object.assign(prodObjects, {
+    Range: dateRange,
+  });
+
+  if (matches) {
+    for (const match of matches) {
+      const pubName = match.replace(/\*\*/g, "");
+      Object.assign(prodObjects, {
+        Pub: pubName,
+      });
+    }
+  }
 
   const prodHeaders = [
     "Station",
@@ -19,7 +35,6 @@ const productivityData = (copiedProdData) => {
     "Hours",
   ];
   let idCounter = 1;
-  const prodObjects = [];
 
   for (let i = 2; i < lines.length; i++) {
     let line = lines[i];
@@ -35,11 +50,6 @@ const productivityData = (copiedProdData) => {
 
     prodObjects.push(object);
   }
-
-  Object.assign(prodObjects, {
-    Pub: pubName[1],
-    Range: range,
-  });
 
   return prodObjects;
 };
