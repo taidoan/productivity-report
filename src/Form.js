@@ -1,9 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const KSRSForm = ({ onSubmit }) => {
+const KSRSForm = ({ onSubmit, initialData }) => {
   const [copiedProdData, setCopiedProdData] = useState("");
   const [copiedServiceData, setCopiedServiceData] = useState("");
   const [takings, setTakings] = useState("");
+
+  useEffect(() => {
+    if (initialData && Array.isArray(initialData) && initialData.length === 3) {
+      const [initialCopiedProdData, initialCopiedServiceData, initialTakings] =
+        initialData;
+      setTakings(initialTakings);
+      setCopiedProdData(initialCopiedProdData);
+      setCopiedServiceData(initialCopiedServiceData);
+    }
+  }, [initialData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

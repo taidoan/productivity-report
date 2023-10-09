@@ -62,6 +62,7 @@ p.intro {
   gap: 2em;
   justify-items: center;
   margin: 2.5em auto 0;
+  padding: 1.5em;
   width: fit-content;
 }
 
@@ -87,6 +88,16 @@ button.tab {
     background-color: var(--clr-primary);
     color: var(--clr-white);
   }
+
+  &:disabled {
+    border: 2px solid hsla(140, 16%, 70%, 1);
+    color: hsla(140, 16%, 70%, 1);
+    cursor: auto;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
 }
 
 button.tab--active {
@@ -101,9 +112,6 @@ button.tab--active {
 
 .productivity-form {
   display: grid;
-  padding: 1.5em;
-  padding-top: 0;
-
   > label {
     font-weight: 600;
   }

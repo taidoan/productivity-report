@@ -7,7 +7,9 @@ const Content = () => {
   const [parsedData, setParsedData] = useState(null);
   const [servicesData, setServiceData] = useState(null);
   const [takings, setTakings] = useState(null);
-
+  const [activeTab, setActiveTab] = useState("dataEntry");
+  const [submittedData, setSubmittedData] = useState(null);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const handleFormSubmit = ([copiedProdData, copiedServiceData, takings]) => {
     const productivity = productivityData(copiedProdData);
     const service = serviceData(copiedServiceData);
@@ -16,6 +18,9 @@ const Content = () => {
       setParsedData(productivity);
       setServiceData(service);
       setTakings(takings);
+      setActiveTab("result");
+      setSubmittedData([copiedProdData, copiedServiceData, takings]);
+      setFormSubmitted(true);
     } catch {
       console.log("error");
     }
@@ -24,12 +29,28 @@ const Content = () => {
   return (
     <div className="container">
       <nav className="tab-nav">
-        <button className="tab tab--active">Data Entry</button>
-        <button className="tab">Result</button>
+        <button
+          className={`tab ${activeTab === "dataEntry" ? "tab--active" : ""}`}
+          onClick={() => setActiveTab("dataEntry")}
+        >
+          Data Entry
+        </button>
+        <button
+          className={`tab ${activeTab === "result" ? "tab--active" : ""}`}
+          onClick={() => {
+            if (formSubmitted) {
+              setActiveTab("result");
+            }
+          }}
+          disabled={!formSubmitted}
+        >
+          Result
+        </button>
       </nav>
       <div className="content">
-        <KSRSForm onSubmit={handleFormSubmit} />
-        {parsedData && (
+        {activeTab === "dataEntry" ? (
+          <KSRSForm onSubmit={handleFormSubmit} initialData={submittedData} />
+        ) : (
           <Table data={parsedData} service={servicesData} takings={takings} />
         )}
       </div>
