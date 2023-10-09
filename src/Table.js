@@ -1,7 +1,7 @@
 import { formatTime, formatTimeNumber } from "./numberFunctions";
 const Table = ({ data, service, takings }) => {
   return (
-    <div className="report">
+    <div className="report printableArea" id="printableArea">
       <h1>{data.Pub} Kitchen Report</h1>
       <p>{data.Range}</p>
       <table className="productivity-table">
@@ -55,8 +55,6 @@ const Table = ({ data, service, takings }) => {
         </tbody>
       </table>
 
-      <br />
-
       <table className="productivity-table">
         <thead>
           <tr>
@@ -89,7 +87,7 @@ const Table = ({ data, service, takings }) => {
                 backgroundColor:
                   formatTimeNumber(service.Wait) < "01:00"
                     ? "lime"
-                    : formatTimeNumber(service.Wait) < "01:29"
+                    : formatTimeNumber(service.Wait) <= "01:30"
                     ? "orange"
                     : "red",
               }}
@@ -107,13 +105,56 @@ const Table = ({ data, service, takings }) => {
               {formatTimeNumber(service.Delivery)}
             </td>
             <td>{service ? service.Orders : "-"}</td>
-            <td>{service ? service.Late : "-"}</td>
+
+            <td
+              style={{
+                backgroundColor:
+                  Math.round((service.Late / service.Orders) * 100) <= 20
+                    ? "lime"
+                    : Math.round((service.Late / service.Orders) * 100) <= 24
+                    ? "orange"
+                    : "red",
+              }}
+            >
+              {service
+                ? `${service.Late} (${(
+                    (service.Late / service.Orders) *
+                    100
+                  ).toFixed(0)}%)`
+                : "-"}
+            </td>
+
             <td>{service ? service.Items : "-"}</td>
             <td>{service ? service.Holds : "-"}</td>
             {takings && <td>£ {takings}</td>}
           </tr>
         </tbody>
       </table>
+
+      <div className="productivity-key">
+        <span className="productivity-comment">
+          The floor team need at least a minute to take food out.
+        </span>
+        <div className="productivity-prep">
+          <span className="green">Under 8 mins prep</span>
+          <span className="orange">Over 8 mins prep</span>
+          <span className="red">Over 9 mins prep</span>
+        </div>
+        <div className="productivity-wait">
+          <span className="green">Under 1 min wait</span>
+          <span className="orange">Under 1:30 min wait</span>
+          <span className="red">Over 1:30 min wait</span>
+        </div>
+        <div className="productivity-delivery">
+          <span className="green">Under 10 mins delivery</span>
+          <span className="red">Over 10 mins delivery</span>
+        </div>
+        <div className="productivity-lates">
+          <span className="green">Under 25% late orders</span>
+          <span className="orange">Over 25% late orders</span>
+          <span className="red">Over 30% late orders</span>
+        </div>
+      </div>
     </div>
   );
 };

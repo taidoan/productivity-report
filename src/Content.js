@@ -2,6 +2,7 @@ import { useState } from "react";
 import Table from "./Table";
 import productivityData, { serviceData } from "./Parse";
 import KSRSForm from "./Form";
+import printResult from "./Print";
 
 const Content = () => {
   const [parsedData, setParsedData] = useState(null);
@@ -45,6 +46,17 @@ const Content = () => {
           disabled={!formSubmitted}
         >
           Result
+        </button>
+        <button
+          className="tab"
+          onClick={() => {
+            if (activeTab === "result") {
+              printResult("printableArea");
+            }
+          }}
+          disabled={activeTab !== "result"}
+        >
+          Print
         </button>
       </nav>
       <div className="content">
