@@ -22,11 +22,17 @@ const Content = () => {
   };
 
   return (
-    <div className="content">
-      <KSRSForm onSubmit={handleFormSubmit} />
-      {parsedData && (
-        <Table data={parsedData} service={servicesData} takings={takings} />
-      )}
+    <div className="container">
+      <nav className="tab-nav">
+        <button className="tab tab--active">Data Entry</button>
+        <button className="tab">Result</button>
+      </nav>
+      <div className="content">
+        <KSRSForm onSubmit={handleFormSubmit} />
+        {parsedData && (
+          <Table data={parsedData} service={servicesData} takings={takings} />
+        )}
+      </div>
     </div>
   );
 };
