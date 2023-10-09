@@ -43,6 +43,7 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         onChange={(e) => setCopiedProdData(e.target.value)}
         placeholder="Copy and paste productivity report here"
         rows="7"
+        required
       />
       <label>
         Service Summary: <span className="required">(*Required)</span>
@@ -52,8 +53,11 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         onChange={(e) => setCopiedServiceData(e.target.value)}
         placeholder="Copy and paste the service summary report here"
         rows="13"
+        required
       />
-      <button type="submit">Submit</button>
+      <button className="submit" type="submit">
+        Submit
+      </button>
     </form>
   );
 };
