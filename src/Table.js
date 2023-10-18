@@ -39,9 +39,9 @@ const Table = ({ data, service, takings }) => {
               <td
                 style={{
                   backgroundColor:
-                    Math.round((item.Late / item.Orders) * 100) <= 20
+                    Math.round((item.Late / item.Orders) * 100) <= 25
                       ? "lime"
-                      : Math.round((item.Late / item.Orders) * 100) <= 24
+                      : Math.round((item.Late / item.Orders) * 100) <= 29
                       ? "orange"
                       : "red",
                 }}
@@ -74,7 +74,7 @@ const Table = ({ data, service, takings }) => {
               style={{
                 backgroundColor:
                   formatTimeNumber(service.Prep) <= "07:59"
-                    ? "green"
+                    ? "lime"
                     : formatTimeNumber(service.Prep) <= "08:59"
                     ? "orange"
                     : "red",
@@ -109,9 +109,9 @@ const Table = ({ data, service, takings }) => {
             <td
               style={{
                 backgroundColor:
-                  Math.round((service.Late / service.Orders) * 100) <= 20
+                  Math.round((service.Late / service.Orders) * 100) <= 25
                     ? "lime"
-                    : Math.round((service.Late / service.Orders) * 100) <= 24
+                    : Math.round((service.Late / service.Orders) * 100) <= 29
                     ? "orange"
                     : "red",
               }}
