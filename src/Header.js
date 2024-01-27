@@ -1,7 +1,7 @@
 const Header = () => {
   return (
-    <header>
-      <div className="container">
+    <header className="mx-16 my-16">
+      <div className="container text-center">
         <h1 className="title">Productivity Report Generator</h1>
         <p className="intro">
           This is a tool to generate a productivity report for your kitchens

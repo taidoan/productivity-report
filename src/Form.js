@@ -50,13 +50,13 @@ const KSRSForm = ({ onSubmit, initialData }) => {
 
   return (
     <form onSubmit={handleSubmit} className="productivity-form">
-      <p className="productivity-intro">
+      <p className="productivity-intro text-center">
         Please enter your weekly sales and data <strong>copied directly</strong>{" "}
         and as it is from KSRS into the boxes below.
       </p>
       <fieldset className="fields">
-        <label htmlFor="sales">
-          Week Sales: <span className="optional">(Optional)</span>
+        <label for="sales" className="font-bold">
+          Week Sales: <span className="font-normal text-sm">(Optional)</span>
         </label>
         <input
           type="number"
@@ -64,9 +64,11 @@ const KSRSForm = ({ onSubmit, initialData }) => {
           onChange={(e) => setTakings(e.target.value)}
           placeholder="0000"
           name="sales"
+          id="sales"
+          className="shadow appearance-none border rounded-xl w-full p-3 text-zinc-700 leading-tight focus:outline-none focus:shadow-outline"
         />
-        <label>
-          Late Target: <span className="required">(*Required)</span>
+        <label className="font-bold">
+          Late Target: <span className="font-normal text-sm">(*Required)</span>
         </label>
         <select
           value={lateTarget}
@@ -79,8 +81,8 @@ const KSRSForm = ({ onSubmit, initialData }) => {
           <option value="25">25%</option>
           <option value="30">30%</option>
         </select>
-        <label>
-          Prep Target: <span className="required">(*Required)</span>
+        <label className="font-bold">
+          Prep Target: <span className="font-normal text-sm">(*Required)</span>
         </label>
         <select
           value={prepTarget}
@@ -96,16 +98,16 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         </select>
       </fieldset>
       <fieldset>
-        <label>
-          Food Lift: <span className="required">(*Required)</span>
+        <label className="font-bold">
+          Food Lift: <span className="font-normal text-sm">(*Required)</span>
         </label>
         <input
           type="checkbox"
           checked={foodLift}
           onChange={(e) => setFoodLift(e.target.checked)}
         />
-        <label>
-          Kitchen Lates <span className="optional">(Optional)</span>
+        <label className="font-bold">
+          Kitchen Lates <span className="font-normal text-sm">(Optional)</span>
         </label>
         <input
           type="checkbox"
@@ -113,8 +115,8 @@ const KSRSForm = ({ onSubmit, initialData }) => {
           onChange={(e) => setKitchenLate(e.target.checked)}
         />
 
-        <label>
-          Delivery Lates <span className="optional">(Optional)</span>
+        <label className="font-bold">
+          Delivery Lates <span className="font-normal text-sm">(Optional)</span>
         </label>
         <input
           type="checkbox"
@@ -122,8 +124,9 @@ const KSRSForm = ({ onSubmit, initialData }) => {
           onChange={(e) => setDeliveryLate(e.target.checked)}
         />
       </fieldset>
-      <label>
-        Productivity Data: <span className="required">(*Required)</span>
+      <label className="font-bold">
+        Productivity Data:{" "}
+        <span className="font-normal text-sm">(*Required)</span>
       </label>
       <textarea
         value={copiedProdData}
@@ -131,9 +134,11 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         placeholder="Copy and paste productivity report here"
         rows="7"
         required
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
-      <label>
-        Service Summary: <span className="required">(*Required)</span>
+      <label className="font-bold">
+        Service Summary:{" "}
+        <span className="font-normal text-sm">(*Required)</span>
       </label>
       <textarea
         value={copiedServiceData}
@@ -141,8 +146,12 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         placeholder="Copy and paste the service summary report here"
         rows="13"
         required
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
-      <button className="submit" type="submit">
+      <button
+        className="font-semibold rounded-lg px-2 py-2 pl-4 pr-4  text-zinc-600 bg-zinc-300 hover:bg-emerald-600 ease-in-out duration-300 hover:text-white"
+        type="submit"
+      >
         Submit
       </button>
     </form>

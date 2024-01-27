@@ -56,16 +56,24 @@ const Content = () => {
   };
 
   return (
-    <div className="container">
-      <nav className="tab-nav">
+    <div className="bg-zinc-50 rounded-2xl p-6 shadow-lg">
+      <nav className="flex space-x-4 justify-center mb-6">
         <button
-          className={`tab ${activeTab === "dataEntry" ? "tab--active" : ""}`}
+          className={`border font-semibold rounded-lg px-2 py-2 pl-4 pr-4  ${
+            activeTab === "dataEntry"
+              ? "border-indigo-600 bg-indigo-600 text-white"
+              : "border-zinc-500 border-2 text-zinc-500 bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white ease-in-out duration-300"
+          }`}
           onClick={() => setActiveTab("dataEntry")}
         >
           Data Entry
         </button>
         <button
-          className={`tab ${activeTab === "result" ? "tab--active" : ""}`}
+          className={`border font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-400 border-2 disabled:text-zinc-400 disabled:bg-transparent disabled:text-zinc-400  ${
+            activeTab === "result"
+              ? "border-indigo-600 bg-indigo-600 text-white"
+              : "border-zinc-500 border-2 text-zinc-500 bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white ease-in-out duration-300"
+          }`}
           onClick={() => {
             if (formSubmitted) {
               setActiveTab("result");
@@ -76,7 +84,7 @@ const Content = () => {
           Result
         </button>
         <button
-          className="tab"
+          className="border font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-300 border-2 disabled:text-zinc-300 disabled:bg-transparent disabled:text-zinc-300 hover:bg-slate-900 hover:border-slate-900 hover:text-white border-zinc-500 text-zinc-500 ease-in-out duration-300"
           onClick={() => {
             if (activeTab === "result") {
               printResult("printableArea");
@@ -87,7 +95,7 @@ const Content = () => {
           Print
         </button>
       </nav>
-      <div className="content">
+      <div className="bg-zinc-100 rounded-xl p-4">
         {activeTab === "dataEntry" ? (
           <KSRSForm onSubmit={handleFormSubmit} initialData={submittedData} />
         ) : (
