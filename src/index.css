@@ -390,3 +390,7 @@ footer a {
     margin-top: 0.3em;
   }
 }
+
+.fields {
+  display: flex-column;
+}

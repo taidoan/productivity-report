@@ -8,10 +8,24 @@ const Content = () => {
   const [parsedData, setParsedData] = useState(null);
   const [servicesData, setServiceData] = useState(null);
   const [takings, setTakings] = useState(null);
+  const [lateTarget, setLateTarget] = useState(null);
+  const [kitchenLate, setKitchenLate] = useState(null);
+  const [deliveryLate, setDeliveryLate] = useState(null);
   const [activeTab, setActiveTab] = useState("dataEntry");
   const [submittedData, setSubmittedData] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const handleFormSubmit = ([copiedProdData, copiedServiceData, takings]) => {
+  const [foodLift, setFoodLift] = useState(null);
+  const [prepTarget, setPrepTarget] = useState(null);
+  const handleFormSubmit = ([
+    copiedProdData,
+    copiedServiceData,
+    takings,
+    lateTarget,
+    kitchenLate,
+    deliveryLate,
+    foodLift,
+    prepTarget,
+  ]) => {
     const productivity = productivityData(copiedProdData);
     const service = serviceData(copiedServiceData);
 
@@ -19,8 +33,22 @@ const Content = () => {
       setParsedData(productivity);
       setServiceData(service);
       setTakings(takings);
+      setLateTarget(lateTarget);
+      setFoodLift(foodLift);
+      setKitchenLate(kitchenLate);
+      setDeliveryLate(deliveryLate);
       setActiveTab("result");
-      setSubmittedData([copiedProdData, copiedServiceData, takings]);
+      setPrepTarget(prepTarget);
+      setSubmittedData([
+        copiedProdData,
+        copiedServiceData,
+        takings,
+        lateTarget,
+        kitchenLate,
+        deliveryLate,
+        foodLift,
+        prepTarget,
+      ]);
       setFormSubmitted(true);
     } catch {
       console.log("error");
@@ -63,7 +91,16 @@ const Content = () => {
         {activeTab === "dataEntry" ? (
           <KSRSForm onSubmit={handleFormSubmit} initialData={submittedData} />
         ) : (
-          <Table data={parsedData} service={servicesData} takings={takings} />
+          <Table
+            data={parsedData}
+            service={servicesData}
+            takings={takings}
+            lateTarget={lateTarget}
+            kitchenLate={kitchenLate}
+            deliveryLate={deliveryLate}
+            foodLift={foodLift}
+            prepTarget={prepTarget}
+          />
         )}
       </div>
     </div>
