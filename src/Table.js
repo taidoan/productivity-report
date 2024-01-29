@@ -10,131 +10,134 @@ const Table = ({
   prepTarget,
 }) => {
   return (
-    <div className="report printableArea" id="printableArea">
-      <h1>{data.Pub} Kitchen Report</h1>
-      <p>{data.Range} </p>
-      {takings && (
-        <p>
-          We've taken <strong>£{takings}</strong> in food sales this week.
-        </p>
-      )}
+    <div
+      className=" bg-zinc-100 rounded-xl p-6 printableArea w-full flex flex-col gap-y-4"
+      id="printableArea"
+    >
+      <div className="text-center text-slate-800" id="resultHeading">
+        <h1 className="font-sans tracking-tight uppercase font-extrabold text-4xl leading-tight">
+          {data.Pub} Kitchen Report
+        </h1>
+        <p>{data.Range} </p>
+        {takings && (
+          <p>
+            We've taken <strong>£{takings}</strong> in food sales this week.
+          </p>
+        )}
+      </div>
 
-      <table className="productivity-table">
-        <thead>
+      <table className="bg-white  w-full border border-slate-800 text-center border-collapse">
+        <thead className="bg-slate-800 text-white font-bold">
           <tr>
-            <th>Name</th>
-            <th>Prep Time</th>
-            <th>Orders</th>
-            <th>Items</th>
-            <th>Late Orders</th>
-            <th>Late Percentage</th>
-            <th>Longest Order</th>
-            <th>Hours Worked</th>
+            <th className="p-1.5">Name</th>
+            <th className="p-1.5">Prep Time</th>
+            <th className="p-1.5">Orders</th>
+            <th className="p-1.5">Items</th>
+            <th className="p-1.5">Late Orders</th>
+            <th className="p-1.5">Late Percentage</th>
+            <th className="p-1.5">Longest Order</th>
+            <th className="p-1.5">Hours Worked</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
             <tr key={item.ID}>
-              <td>{item.Name}</td>
+              <td className="p-1.5 border border-slate-800">{item.Name}</td>
               <td
-                style={{
-                  backgroundColor:
-                    item.Prep <= prepTarget
-                      ? "lime"
-                      : item.Prep <= prepTarget + 1
-                      ? "orange"
-                      : "red",
-                }}
+                className={`p-1.5 border border-slate-800 ${
+                  item.Prep <= prepTarget
+                    ? "bg-lime-500"
+                    : item.Prep <= prepTarget + 1
+                    ? "bg-amber-500"
+                    : "bg-red-500"
+                }`}
               >
                 {formatTime(item.Prep)}
               </td>
-              <td>{item.Orders}</td>
-              <td>{item.Items}</td>
-              <td>{item.Late}</td>
+              <td className="p-1.5 border border-slate-800">{item.Orders}</td>
+              <td className="p-1.5 border border-slate-800">{item.Items}</td>
+              <td className="p-1.5 border border-slate-800">{item.Late}</td>
               <td
-                style={{
-                  backgroundColor:
-                    Math.round((item.Late / item.Orders) * 100) <= lateTarget
-                      ? "lime"
-                      : Math.round((item.Late / item.Orders) * 100) <=
-                        lateTarget + 4
-                      ? "orange"
-                      : "red",
-                }}
+                className={`p-1.5 border border-slate-800 ${
+                  Math.round((item.Late / item.Orders) * 100) <= lateTarget
+                    ? "bg-lime-500"
+                    : Math.round((item.Late / item.Orders) * 100) <=
+                      lateTarget + 4
+                    ? "bg-amber-500"
+                    : "bg-red-500"
+                }`}
               >
                 {Math.round((item.Late / item.Orders) * 100)}%
               </td>
-              <td>{formatTime(item.Longest)}</td>
-              <td>{item.Hours}</td>
+              <td className="p-1.5 border border-slate-800">
+                {formatTime(item.Longest)}
+              </td>
+              <td className="p-1.5 border border-slate-800">{item.Hours}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      <table className="productivity-table">
-        <thead>
+      <table className="bg-white  w-full border border-slate-800 text-center border-collapse">
+        <thead className="bg-slate-800 text-white font-bold">
           <tr>
-            <th>Prep</th>
-            <th>Wait</th>
-            <th>Delivery</th>
-            <th>Orders</th>
-            <th>Lates</th>
-            <th>Items</th>
-            <th>Holds</th>
-            {kitchenLate && <th>Kitchen Lates</th>}
-            {deliveryLate && <th>Floor Lates</th>}
+            <th className="p-1.5">Prep</th>
+            <th className="p-1.5">Wait</th>
+            <th className="p-1.5">Delivery</th>
+            <th className="p-1.5">Orders</th>
+            <th className="p-1.5">Lates</th>
+            <th className="p-1.5">Items</th>
+            <th className="p-1.5">Holds</th>
+            {kitchenLate && <th className="p-1.5">Kitchen Lates</th>}
+            {deliveryLate && <th className="p-1.5">Floor Lates</th>}
           </tr>
         </thead>
         <tbody>
           <tr>
             <td
-              style={{
-                backgroundColor:
-                  formatTimeNumber(service.Prep) <= "07:59"
-                    ? "lime"
-                    : formatTimeNumber(service.Prep) <= "08:59"
-                    ? "orange"
-                    : "red",
-              }}
+              className={`p-1.5 border border-slate-800 ${
+                service.Prep <= prepTarget
+                  ? "bg-lime-500"
+                  : service.Prep <= prepTarget + 1
+                  ? "bg-amber-500"
+                  : "bg-red-500"
+              }`}
             >
               {service ? formatTimeNumber(service.Prep) : "-"}
             </td>
             <td
-              style={{
-                backgroundColor:
-                  formatTimeNumber(service.Wait) <
-                  (foodLift ? "01:30" : "01:00")
-                    ? "lime"
-                    : formatTimeNumber(service.Wait) <=
-                      (foodLift ? "2:00" : "01:30")
-                    ? "orange"
-                    : "red",
-              }}
+              className={`p-1.5 border border-slate-800 ${
+                formatTimeNumber(service.Wait) < (foodLift ? "01:30" : "01:00")
+                  ? "bg-lime-500"
+                  : formatTimeNumber(service.Wait) <=
+                    (foodLift ? "2:00" : "01:30")
+                  ? "bg-amber-500"
+                  : "bg-red-500"
+              }`}
             >
               {service ? formatTimeNumber(service.Wait) : "-"}
             </td>
             <td
-              style={{
-                backgroundColor:
-                  formatTimeNumber(service.Delivery) >= "10:00"
-                    ? "red"
-                    : "lime",
-              }}
+              className={`p-1.5 border border-slate-800 ${
+                formatTimeNumber(service.Delivery) >= "10:00"
+                  ? "bg-red-500"
+                  : "bg-lime-500"
+              }`}
             >
               {formatTimeNumber(service.Delivery)}
             </td>
-            <td>{service ? service.Orders : "-"}</td>
+            <td className="p-1.5 border border-slate-800">
+              {service ? service.Orders : "-"}
+            </td>
 
             <td
-              style={{
-                backgroundColor:
-                  Math.round((service.Late / service.Orders) * 100) <=
-                  lateTarget
-                    ? "lime"
-                    : Math.round((service.Late / service.Orders) * 100) <=
-                      lateTarget + 4
-                    ? "orange"
-                    : "red",
-              }}
+              className={`p-1.5 border border-slate-800 ${
+                Math.round((service.Late / service.Orders) * 100) <= lateTarget
+                  ? "bg-lime-500"
+                  : Math.round((service.Late / service.Orders) * 100) <=
+                    lateTarget + 4
+                  ? "bg-amber-500"
+                  : "bg-red-500"
+              }`}
             >
               {service
                 ? `${service.Late} (${(
@@ -144,10 +147,14 @@ const Table = ({
                 : "-"}
             </td>
 
-            <td>{service ? service.Items : "-"}</td>
-            <td>{service ? service.Holds : "-"}</td>
+            <td className="p-1.5 border border-slate-800">
+              {service ? service.Items : "-"}
+            </td>
+            <td className="p-1.5 border border-slate-800">
+              {service ? service.Holds : "-"}
+            </td>
             {kitchenLate && (
-              <td>
+              <td className="p-1.5 border border-slate-800">
                 {service.ChefLates} (
                 {service.Orders > 0
                   ? Math.floor((service.ChefLates / service.Orders) * 100)
@@ -156,7 +163,7 @@ const Table = ({
               </td>
             )}
             {deliveryLate && (
-              <td>
+              <td className="p-1.5 border border-slate-800">
                 {service.Late - service.ChefLates} (
                 {(
                   ((service.Late - service.ChefLates) / service.Orders) *
@@ -169,47 +176,98 @@ const Table = ({
         </tbody>
       </table>
 
-      <div className="productivity-key">
-        <span className="productivity-comment">
+      <div className="flex flex-wrap gap-y-4 gap-x-10 justify-center">
+        <span className="grow w-full text-center">
           {foodLift
             ? "The floor team need at least a minute and a half to take food out."
             : "The floor team need at least a minute to take food out."}
         </span>
         {prepTarget === 8 ? (
-          <div className="productivity-prep">
-            <span className="green">Under {prepTarget} mins prep</span>
-            <span className="orange">Under {prepTarget + 1} mins prep</span>
-            <span className="red">Over {prepTarget + 1} mins prep</span>
+          <div className="flex flex-col">
+            <span>
+              <span className="bg-lime-500 inline-block w-3 h-3 mr-2"></span>
+              Under {prepTarget} mins prep
+            </span>
+            <span>
+              <span className="bg-amber-500 inline-block w-3 h-3 mr-2"></span>
+              Under {prepTarget + 1} mins prep
+            </span>
+            <span>
+              <span className="bg-red-500 inline-block w-3 h-3 mr-2"></span>Over{" "}
+              {prepTarget + 1} mins prep
+            </span>
           </div>
         ) : (
-          <div className="productivity-prep">
-            <span className="green">Under {prepTarget} mins prep</span>
-            <span className="orange">Over {prepTarget} mins prep</span>
-            <span className="red">Over {prepTarget + 1} mins prep</span>
+          <div className="flex flex-col">
+            <span>
+              <span className="bg-lime-500 inline-block w-3 h-3 mr-2"></span>
+              Under {prepTarget} mins prep
+            </span>
+            <span>
+              <span className="bg-amber-500 inline-block w-3 h-3 mr-2"></span>
+              Over {prepTarget} mins prep
+            </span>
+            <span>
+              <span className="bg-red-500 inline-block w-3 h-3 mr-2"></span>Over{" "}
+              {prepTarget + 1} mins prep
+            </span>
           </div>
         )}
         {foodLift ? (
-          <div className="productivity-wait">
-            <span className="green">Under 1:30 min wait</span>
-            <span className="orange">Under 2:00 min wait</span>
-            <span className="red">Over 2:00 min wait</span>
+          <div className="flex flex-col">
+            <span>
+              <span className="bg-lime-500 inline-block w-3 h-3 mr-2"></span>
+              Under 1:30 min wait
+            </span>
+            <span>
+              <span className="bg-amber-500 inline-block w-3 h-3 mr-2"></span>
+              Under 2:00 min wait
+            </span>
+            <span>
+              <span className="bg-red-500 inline-block w-3 h-3 mr-2"></span>Over
+              2:00 min wait
+            </span>
           </div>
         ) : (
-          <div className="productivity-wait">
-            <span className="green">Under 1:00 min wait</span>
-            <span className="orange">Under 1:30 min wait</span>
-            <span className="red">Over 1:30 min wait</span>
+          <div className="flex flex-col">
+            <span>
+              <span className="bg-lime-500 inline-block w-3 h-3 mr-2"></span>
+              Under 1:00 min wait
+            </span>
+            <span>
+              <span className="bg-amber-500 inline-block w-3 h-3 mr-2"></span>
+              Under 1:30 min wait
+            </span>
+            <span>
+              <span className="bg-red-500 inline-block w-3 h-3 mr-2"></span>Over
+              1:30 min wait
+            </span>
           </div>
         )}
-        <div className="productivity-delivery">
-          <span className="green">Under 10 mins delivery</span>
-          <span className="red">Over 10 mins delivery</span>
+        <div className="flex flex-col">
+          <span>
+            <span className="bg-lime-500 inline-block w-3 h-3 mr-2"></span>Under
+            10 mins delivery
+          </span>
+          <span>
+            <span className="bg-red-500 inline-block w-3 h-3 mr-2"></span>Over
+            10 mins delivery
+          </span>
         </div>
         {lateTarget && (
-          <div className="productivity-lates">
-            <span className="green">Under {lateTarget}% late orders</span>
-            <span className="orange">Over {lateTarget}% late orders</span>
-            <span className="red">Over {lateTarget + 5}% late orders</span>
+          <div className="flex flex-col">
+            <span>
+              <span className="bg-lime-500 inline-block w-3 h-3 mr-2"></span>{" "}
+              Under {lateTarget}% late orders
+            </span>
+            <span>
+              <span className="bg-amber-500 inline-block w-3 h-3 mr-2"></span>
+              Over {lateTarget}% late orders
+            </span>
+            <span>
+              <span className="bg-red-500 inline-block w-3 h-3 mr-2"></span>Over{" "}
+              {lateTarget + 5}% late orders
+            </span>
           </div>
         )}
       </div>

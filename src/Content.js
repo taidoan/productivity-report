@@ -97,9 +97,8 @@ const Content = () => {
       </nav>
       {activeTab === "dataEntry" ? (
         <p className="text-center mt-0 mb-6">
-          Please enter your weekly sales and data{" "}
-          <strong>copied directly</strong> and as it is from KSRS into the boxes
-          below.
+          Please set your targets, select optional information and enter data{" "}
+          <strong>copied directly</strong> KSRS into the boxes below.
         </p>
       ) : (
         ""

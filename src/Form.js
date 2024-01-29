@@ -68,7 +68,9 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         <div className="flex flex-col gap-y-2 rounded-xl p-4 bg-opacity-70 bg-zinc-200">
           <label className="font-bold leading-4">
             Late Target:{" "}
-            <span className="font-normal text-sm">(*Required)</span>
+            <span className="font-normal text-sm">
+              (Required<span className="text-red-500">*</span>)
+            </span>
           </label>
           <div className="inline-block relative w-full">
             <select
@@ -97,7 +99,9 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         <div className="flex flex-col gap-y-2 rounded-xl p-4 bg-opacity-70 bg-zinc-200">
           <label className="font-bold leading-4">
             Prep Target:{" "}
-            <span className="font-normal text-sm">(*Required)</span>
+            <span className="font-normal text-sm">
+              (Required<span className="text-red-500">*</span>)
+            </span>
           </label>
           <div className="inline-block relative w-full">
             <select
@@ -127,7 +131,9 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         <div className="rounded-xl p-4 bg-opacity-70 bg-zinc-200 flex justify-between items-center">
           <label className="font-bold leading-4">
             Food Lift:
-            <span className="font-normal text-sm ml-1">(*Required)</span>
+            <span className="font-normal text-sm ml-1">
+              (Required<span className="text-red-500">*</span>)
+            </span>
           </label>
           <input
             type="checkbox"
@@ -163,7 +169,9 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         <div className="flex flex-col gap-y-2 col-span-3 rounded-xl p-4 pb-4 bg-opacity-70 bg-zinc-200">
           <label className="font-bold leading-4">
             Productivity Data:{" "}
-            <span className="font-normal text-sm">(*Required)</span>
+            <span className="font-normal text-sm">
+              (Required<span className="text-red-500">*</span>)
+            </span>
           </label>
           <textarea
             value={copiedProdData}
@@ -177,7 +185,9 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         <div className="flex flex-col gap-y-2 col-span-3 rounded-xl p-4 pb-4 bg-opacity-70 bg-zinc-200">
           <label className="font-bold leading-4">
             Service Summary:{" "}
-            <span className="font-normal text-sm">(*Required)</span>
+            <span className="font-normal text-sm">
+              (Required<span className="text-red-500">*</span>)
+            </span>
           </label>
           <textarea
             value={copiedServiceData}
