@@ -82,11 +82,15 @@ const serviceData = (copiedServiceData) => {
   const statsLine2 = lines[6].split("\t");
   const statsValue2 = statsLine2.slice(1).map((value) => parseFloat(value));
 
+  const chefStats = lines[11].split("\t");
+  const chefValues = chefStats.slice(1).map((value) => parseFloat(value));
+
   Object.assign(serviceTimes, {
     Orders: statsValues[1],
     Late: statsValue2[3],
     Items: statsValues[3],
     Holds: statsValues[6],
+    ChefLates: chefValues[2],
   });
 
   return serviceTimes;
