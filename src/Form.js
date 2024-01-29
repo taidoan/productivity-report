@@ -50,106 +50,148 @@ const KSRSForm = ({ onSubmit, initialData }) => {
 
   return (
     <form onSubmit={handleSubmit} className="productivity-form">
-      <p className="productivity-intro text-center">
-        Please enter your weekly sales and data <strong>copied directly</strong>{" "}
-        and as it is from KSRS into the boxes below.
-      </p>
-      <fieldset className="fields">
-        <label for="sales" className="font-bold">
-          Week Sales: <span className="font-normal text-sm">(Optional)</span>
-        </label>
-        <input
-          type="number"
-          value={takings}
-          onChange={(e) => setTakings(e.target.value)}
-          placeholder="0000"
-          name="sales"
-          id="sales"
-          className="shadow appearance-none border rounded-xl w-full p-3 text-zinc-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-        <label className="font-bold">
-          Late Target: <span className="font-normal text-sm">(*Required)</span>
-        </label>
-        <select
-          value={lateTarget}
-          onChange={(e) => setLateTarget(parseFloat(e.target.value, 10))}
-        >
-          <option value="5">5%</option>
-          <option value="10">10%</option>
-          <option value="15">15%</option>
-          <option value="20">20%</option>
-          <option value="25">25%</option>
-          <option value="30">30%</option>
-        </select>
-        <label className="font-bold">
-          Prep Target: <span className="font-normal text-sm">(*Required)</span>
-        </label>
-        <select
-          value={prepTarget}
-          onChange={(e) => setPrepTarget(parseFloat(e.target.value))}
-        >
-          <option value="2">2:00</option>
-          <option value="3">3:00</option>
-          <option value="4">4:00</option>
-          <option value="5">5:00</option>
-          <option value="6">6:00</option>
-          <option value="7">7:00</option>
-          <option value="8">8:00</option>
-        </select>
-      </fieldset>
-      <fieldset>
-        <label className="font-bold">
-          Food Lift: <span className="font-normal text-sm">(*Required)</span>
-        </label>
-        <input
-          type="checkbox"
-          checked={foodLift}
-          onChange={(e) => setFoodLift(e.target.checked)}
-        />
-        <label className="font-bold">
-          Kitchen Lates <span className="font-normal text-sm">(Optional)</span>
-        </label>
-        <input
-          type="checkbox"
-          checked={kitchenLate}
-          onChange={(e) => setKitchenLate(e.target.checked)}
-        />
+      <div className="grid gap-x-4 gap-y-4 grid-cols-3">
+        <div className="flex flex-col gap-y-2 rounded-xl p-4 bg-opacity-70 bg-zinc-200">
+          <label for="sales" className="font-bold leading-4">
+            Week Sales: <span className="font-normal text-sm">(Optional)</span>
+          </label>
+          <input
+            type="number"
+            value={takings}
+            onChange={(e) => setTakings(e.target.value)}
+            placeholder="0000"
+            name="sales"
+            id="sales"
+            className="shadow appearance-none border rounded-lg w-full p-3 text-zinc-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="flex flex-col gap-y-2 rounded-xl p-4 bg-opacity-70 bg-zinc-200">
+          <label className="font-bold leading-4">
+            Late Target:{" "}
+            <span className="font-normal text-sm">(*Required)</span>
+          </label>
+          <div className="inline-block relative w-full">
+            <select
+              value={lateTarget}
+              onChange={(e) => setLateTarget(parseFloat(e.target.value, 10))}
+              className="block appearance-none w-full bg-white border text-zinc-700  hover:border-gray-500 p-3 pr-8 rounded-lg shadow leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="5">5%</option>
+              <option value="10">10%</option>
+              <option value="15">15%</option>
+              <option value="20">20%</option>
+              <option value="25">25%</option>
+              <option value="30">30%</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                class=" fill-zinc-400 h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-y-2 rounded-xl p-4 bg-opacity-70 bg-zinc-200">
+          <label className="font-bold leading-4">
+            Prep Target:{" "}
+            <span className="font-normal text-sm">(*Required)</span>
+          </label>
+          <div className="inline-block relative w-full">
+            <select
+              value={prepTarget}
+              onChange={(e) => setPrepTarget(parseFloat(e.target.value))}
+              className="block appearance-none w-full bg-white border text-zinc-700  hover:border-gray-500 p-3 pr-8 rounded-lg shadow leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="2">2:00</option>
+              <option value="3">3:00</option>
+              <option value="4">4:00</option>
+              <option value="5">5:00</option>
+              <option value="6">6:00</option>
+              <option value="7">7:00</option>
+              <option value="8">8:00</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                class=" fill-zinc-400 h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div className="rounded-xl p-4 bg-opacity-70 bg-zinc-200 flex justify-between items-center">
+          <label className="font-bold leading-4">
+            Food Lift:
+            <span className="font-normal text-sm ml-1">(*Required)</span>
+          </label>
+          <input
+            type="checkbox"
+            checked={foodLift}
+            onChange={(e) => setFoodLift(e.target.checked)}
+            className="ml-3"
+          />
+        </div>
+        <div className="rounded-xl p-4 bg-opacity-70 bg-zinc-200 flex justify-between items-center">
+          <label className="font-bold leading-4">
+            Kitchen Lates:
+            <span className="font-normal text-sm ml-1">(Optional)</span>
+          </label>
+          <input
+            type="checkbox"
+            checked={kitchenLate}
+            onChange={(e) => setKitchenLate(e.target.checked)}
+            className="ml-3"
+          />
+        </div>
+        <div className="rounded-xl p-4 bg-opacity-70 bg-zinc-200 flex justify-between items-center">
+          <label className="font-bold leading-4">
+            Delivery Lates:
+            <span className="font-normal text-sm ml-1">(Optional)</span>
+          </label>
+          <input
+            type="checkbox"
+            checked={deliveryLate}
+            onChange={(e) => setDeliveryLate(e.target.checked)}
+            className="ml-3"
+          />
+        </div>
+        <div className="flex flex-col gap-y-2 col-span-3 rounded-xl p-4 pb-4 bg-opacity-70 bg-zinc-200">
+          <label className="font-bold leading-4">
+            Productivity Data:{" "}
+            <span className="font-normal text-sm">(*Required)</span>
+          </label>
+          <textarea
+            value={copiedProdData}
+            onChange={(e) => setCopiedProdData(e.target.value)}
+            placeholder="Copy and paste productivity report here"
+            rows="6"
+            required
+            className="shadow appearance-none border rounded-lg w-full p-3 text-zinc-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="flex flex-col gap-y-2 col-span-3 rounded-xl p-4 pb-4 bg-opacity-70 bg-zinc-200">
+          <label className="font-bold leading-4">
+            Service Summary:{" "}
+            <span className="font-normal text-sm">(*Required)</span>
+          </label>
+          <textarea
+            value={copiedServiceData}
+            onChange={(e) => setCopiedServiceData(e.target.value)}
+            placeholder="Copy and paste the service summary report here"
+            rows="13"
+            required
+            className="shadow appearance-none border rounded-lg w-full p-3 text-zinc-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+      </div>
 
-        <label className="font-bold">
-          Delivery Lates <span className="font-normal text-sm">(Optional)</span>
-        </label>
-        <input
-          type="checkbox"
-          checked={deliveryLate}
-          onChange={(e) => setDeliveryLate(e.target.checked)}
-        />
-      </fieldset>
-      <label className="font-bold">
-        Productivity Data:{" "}
-        <span className="font-normal text-sm">(*Required)</span>
-      </label>
-      <textarea
-        value={copiedProdData}
-        onChange={(e) => setCopiedProdData(e.target.value)}
-        placeholder="Copy and paste productivity report here"
-        rows="7"
-        required
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
-      <label className="font-bold">
-        Service Summary:{" "}
-        <span className="font-normal text-sm">(*Required)</span>
-      </label>
-      <textarea
-        value={copiedServiceData}
-        onChange={(e) => setCopiedServiceData(e.target.value)}
-        placeholder="Copy and paste the service summary report here"
-        rows="13"
-        required
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
       <button
-        className="font-semibold rounded-lg px-2 py-2 pl-4 pr-4  text-zinc-600 bg-zinc-300 hover:bg-emerald-600 ease-in-out duration-300 hover:text-white"
+        className="font-semibold rounded-lg px-2 py-2 pl-4 pr-4  text-zinc-600 bg-zinc-200 hover:bg-blue-500 ease-in-out duration-300 hover:text-white mx-auto block mt-4"
         type="submit"
       >
         Submit

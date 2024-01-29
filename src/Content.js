@@ -61,7 +61,7 @@ const Content = () => {
         <button
           className={`border font-semibold rounded-lg px-2 py-2 pl-4 pr-4  ${
             activeTab === "dataEntry"
-              ? "border-indigo-600 bg-indigo-600 text-white"
+              ? "border-blue-600 bg-blue-600 text-white"
               : "border-zinc-500 border-2 text-zinc-500 bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white ease-in-out duration-300"
           }`}
           onClick={() => setActiveTab("dataEntry")}
@@ -71,7 +71,7 @@ const Content = () => {
         <button
           className={`border font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-400 border-2 disabled:text-zinc-400 disabled:bg-transparent disabled:text-zinc-400  ${
             activeTab === "result"
-              ? "border-indigo-600 bg-indigo-600 text-white"
+              ? "border-blue-600 bg-blue-600 text-white"
               : "border-zinc-500 border-2 text-zinc-500 bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white ease-in-out duration-300"
           }`}
           onClick={() => {
@@ -84,7 +84,7 @@ const Content = () => {
           Result
         </button>
         <button
-          className="border font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-300 border-2 disabled:text-zinc-300 disabled:bg-transparent disabled:text-zinc-300 hover:bg-slate-900 hover:border-slate-900 hover:text-white border-zinc-500 text-zinc-500 ease-in-out duration-300"
+          className="border font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-200 border-2 disabled:text-zinc-300 disabled:bg-transparent disabled:text-zinc-300 hover:bg-slate-900 hover:border-slate-900 hover:text-white border-zinc-500 text-zinc-500 ease-in-out duration-300"
           onClick={() => {
             if (activeTab === "result") {
               printResult("printableArea");
@@ -95,7 +95,16 @@ const Content = () => {
           Print
         </button>
       </nav>
-      <div className="bg-zinc-100 rounded-xl p-4">
+      {activeTab === "dataEntry" ? (
+        <p className="text-center mt-0 mb-6">
+          Please enter your weekly sales and data{" "}
+          <strong>copied directly</strong> and as it is from KSRS into the boxes
+          below.
+        </p>
+      ) : (
+        ""
+      )}
+      <div className="">
         {activeTab === "dataEntry" ? (
           <KSRSForm onSubmit={handleFormSubmit} initialData={submittedData} />
         ) : (
