@@ -69,10 +69,10 @@ const Content = () => {
           Data Entry
         </button>
         <button
-          className={`border font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-400 border-2 disabled:text-zinc-400 disabled:bg-transparent disabled:text-zinc-400  ${
+          className={`border font-semibold rounded-lg px-2 py-2 pl-4 pr-4  border-2 disabled:text-zinc-300 disabled:border-zinc-200 disabled:bg-transparent   ${
             activeTab === "result"
               ? "border-blue-600 bg-blue-600 text-white"
-              : "border-zinc-500 border-2 text-zinc-500 bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white ease-in-out duration-300"
+              : "border-zinc-500 border-2 text-zinc-500 bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white ease-in-out duration-300  "
           }`}
           onClick={() => {
             if (formSubmitted) {
