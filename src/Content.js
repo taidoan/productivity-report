@@ -56,8 +56,8 @@ const Content = () => {
   };
 
   return (
-    <div className="bg-zinc-50 rounded-2xl p-6 shadow-lg">
-      <nav className="flex space-x-4 justify-center mb-6">
+    <div className="bg-zinc-50 rounded-2xl p-6 shadow-lg w-full">
+      <nav className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:space-x-4 justify-center mb-6">
         <button
           className={`border font-semibold rounded-lg px-2 py-2 pl-4 pr-4  ${
             activeTab === "dataEntry"
