@@ -69,7 +69,7 @@ const Content = () => {
           Data Entry
         </button>
         <button
-          className={`border font-semibold rounded-lg px-2 py-2 pl-4 pr-4  border-2 disabled:text-zinc-300 disabled:border-zinc-200 disabled:bg-transparent   ${
+          className={`font-semibold rounded-lg px-2 py-2 pl-4 pr-4  border-2 disabled:text-zinc-300 disabled:border-zinc-200 disabled:bg-transparent   ${
             activeTab === "result"
               ? "border-blue-600 bg-blue-600 text-white"
               : "border-zinc-500 border-2 text-zinc-500 bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white ease-in-out duration-300  "
@@ -84,7 +84,7 @@ const Content = () => {
           Result
         </button>
         <button
-          className="border font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-200 border-2 disabled:text-zinc-300 disabled:bg-transparent disabled:text-zinc-300 hover:bg-slate-900 hover:border-slate-900 hover:text-white border-zinc-500 text-zinc-500 ease-in-out duration-300"
+          className="font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-200 border-2 disabled:text-zinc-300 disabled:bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white border-zinc-500 text-zinc-500 ease-in-out duration-300"
           onClick={() => {
             if (activeTab === "result") {
               printResult("printableArea");
