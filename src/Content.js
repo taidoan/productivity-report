@@ -56,8 +56,8 @@ const Content = () => {
   };
 
   return (
-    <div className="bg-zinc-50 rounded-2xl p-6 shadow-lg">
-      <nav className="flex space-x-4 justify-center mb-6">
+    <div className="bg-zinc-50 rounded-2xl p-6 shadow-lg w-full">
+      <nav className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:space-x-4 justify-center mb-6">
         <button
           className={`border font-semibold rounded-lg px-2 py-2 pl-4 pr-4  ${
             activeTab === "dataEntry"
@@ -69,10 +69,10 @@ const Content = () => {
           Data Entry
         </button>
         <button
-          className={`border font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-400 border-2 disabled:text-zinc-400 disabled:bg-transparent disabled:text-zinc-400  ${
+          className={`font-semibold rounded-lg px-2 py-2 pl-4 pr-4  border-2 disabled:text-zinc-300 disabled:border-zinc-200 disabled:bg-transparent   ${
             activeTab === "result"
               ? "border-blue-600 bg-blue-600 text-white"
-              : "border-zinc-500 border-2 text-zinc-500 bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white ease-in-out duration-300"
+              : "border-zinc-500 border-2 text-zinc-500 bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white ease-in-out duration-300  "
           }`}
           onClick={() => {
             if (formSubmitted) {
@@ -84,7 +84,7 @@ const Content = () => {
           Result
         </button>
         <button
-          className="border font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-200 border-2 disabled:text-zinc-300 disabled:bg-transparent disabled:text-zinc-300 hover:bg-slate-900 hover:border-slate-900 hover:text-white border-zinc-500 text-zinc-500 ease-in-out duration-300"
+          className="font-semibold rounded-lg px-2 py-2 pl-4 pr-4 disabled:border-zinc-200 border-2 disabled:text-zinc-300 disabled:bg-transparent hover:bg-slate-900 hover:border-slate-900 hover:text-white border-zinc-500 text-zinc-500 ease-in-out duration-300"
           onClick={() => {
             if (activeTab === "result") {
               printResult("printableArea");

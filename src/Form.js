@@ -50,7 +50,7 @@ const KSRSForm = ({ onSubmit, initialData }) => {
 
   return (
     <form onSubmit={handleSubmit} className="productivity-form">
-      <div className="grid gap-x-4 gap-y-4 grid-cols-3">
+      <div className="flex flex-col md:grid gap-x-4 gap-y-4 grid-cols-3">
         <div className="flex flex-col gap-y-2 rounded-xl p-4 bg-opacity-70 bg-zinc-200">
           <label for="sales" className="font-bold leading-4">
             Week Sales: <span className="font-normal text-sm">(Optional)</span>
