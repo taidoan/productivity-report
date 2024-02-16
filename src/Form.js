@@ -4,15 +4,11 @@ const KSRSForm = ({ onSubmit, initialData }) => {
   const [copiedProdData, setCopiedProdData] = useState("");
   const [copiedServiceData, setCopiedServiceData] = useState("");
   const [takings, setTakings] = useState("");
-  const [lateTarget, setLateTarget] = useState(20);
+  const [lateTarget, setLateTarget] = useState(25);
   const [kitchenLate, setKitchenLate] = useState("");
   const [deliveryLate, setDeliveryLate] = useState("");
   const [foodLift, setFoodLift] = useState("");
   const [prepTarget, setPrepTarget] = useState(8);
-
-  console.log("Prep Target:", prepTarget);
-  console.log("Late Target:", lateTarget);
-
   useEffect(() => {
     if (initialData && Array.isArray(initialData)) {
       const [
@@ -48,15 +44,13 @@ const KSRSForm = ({ onSubmit, initialData }) => {
       foodLift,
       prepTarget,
     ]);
-    console.log(lateTarget);
-    console.log("Prep Target:", prepTarget);
   };
 
   return (
     <form onSubmit={handleSubmit} className="productivity-form">
       <div className="flex flex-col md:grid gap-x-4 gap-y-4 grid-cols-3">
         <div className="flex flex-col gap-y-2 rounded-xl p-4 bg-opacity-70 bg-zinc-200">
-          <label for="sales" className="font-bold leading-4">
+          <label htmlFor="sales" className="font-bold leading-4">
             Week Sales: <span className="font-normal text-sm">(Optional)</span>
           </label>
           <input
@@ -81,6 +75,7 @@ const KSRSForm = ({ onSubmit, initialData }) => {
               value={lateTarget}
               onChange={(e) => setLateTarget(parseFloat(e.target.value, 10))}
               className="block appearance-none w-full bg-white border text-zinc-700  hover:border-gray-500 p-3 pr-8 rounded-lg shadow leading-tight focus:outline-none focus:shadow-outline"
+              required
             >
               <option value="5">5%</option>
               <option value="10">10%</option>
@@ -89,9 +84,9 @@ const KSRSForm = ({ onSubmit, initialData }) => {
               <option value="25">25%</option>
               <option value="30">30%</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
-                class=" fill-zinc-400 h-4 w-4"
+                className=" fill-zinc-400 h-4 w-4"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
               >
@@ -112,6 +107,7 @@ const KSRSForm = ({ onSubmit, initialData }) => {
               value={prepTarget}
               onChange={(e) => setPrepTarget(parseFloat(e.target.value))}
               className="block appearance-none w-full bg-white border text-zinc-700  hover:border-gray-500 p-3 pr-8 rounded-lg shadow leading-tight focus:outline-none focus:shadow-outline"
+              required
             >
               <option value="2">2:00</option>
               <option value="3">3:00</option>
@@ -121,9 +117,9 @@ const KSRSForm = ({ onSubmit, initialData }) => {
               <option value="7">7:00</option>
               <option value="8">8:00</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
-                class=" fill-zinc-400 h-4 w-4"
+                className=" fill-zinc-400 h-4 w-4"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
               >
@@ -135,9 +131,7 @@ const KSRSForm = ({ onSubmit, initialData }) => {
         <div className="rounded-xl p-4 bg-opacity-70 bg-zinc-200 flex justify-between items-center">
           <label className="font-bold leading-4">
             Food Lift:
-            <span className="font-normal text-sm ml-1">
-              (Required<span className="text-red-500">*</span>)
-            </span>
+            <span className="font-normal text-sm ml-1">(Optional)</span>
           </label>
           <input
             type="checkbox"
