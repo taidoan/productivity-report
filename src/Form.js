@@ -8,7 +8,10 @@ const KSRSForm = ({ onSubmit, initialData }) => {
   const [kitchenLate, setKitchenLate] = useState("");
   const [deliveryLate, setDeliveryLate] = useState("");
   const [foodLift, setFoodLift] = useState("");
-  const [prepTarget, setPrepTarget] = useState("8");
+  const [prepTarget, setPrepTarget] = useState(8);
+
+  console.log("Prep Target:", prepTarget);
+  console.log("Late Target:", lateTarget);
 
   useEffect(() => {
     if (initialData && Array.isArray(initialData)) {
@@ -46,6 +49,7 @@ const KSRSForm = ({ onSubmit, initialData }) => {
       prepTarget,
     ]);
     console.log(lateTarget);
+    console.log("Prep Target:", prepTarget);
   };
 
   return (
