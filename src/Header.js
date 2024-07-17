@@ -9,7 +9,7 @@ const Header = () => {
         <p className="leading-normal">
           This is a tool that will generate a productivity report for your
           kitchens using data from KSRS. When printing, select "enable headers
-          and footers" as well as background graphics if you want colours.
+          and footers" as well as "background graphics" if you want colours.
         </p>
       </div>
     </header>
