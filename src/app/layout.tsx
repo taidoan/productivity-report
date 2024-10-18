@@ -1,14 +1,6 @@
 import type { Metadata } from "next";
-import { Roboto_Flex } from 'next/font/google';
 import "./globals.css";
 import { Providers } from './providers';
-
-const roboto = Roboto_Flex({
-  subsets: ['latin'],
-  variable: '--font-roboto', 
-  display: 'swap',
-});
-
 
 export const metadata: Metadata = {
   title: "Kitchen Productivity Report",

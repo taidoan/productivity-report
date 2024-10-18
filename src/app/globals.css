@@ -3,26 +3,28 @@
 @tailwind utilities;
 
 :root {
-  --background: #f1f5f9;
+  --background: #e5e7eb;
   --foreground: #020617;
-}
 
-.dark {
-  --background: #030712; /* Dark mode background */
-  --foreground: #f9fafb; /* Dark mode foreground */
+  --clr-good: lime;
+  --clr-warning: orange;
+  --clr-failure: red;
 }
-/* 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #030712;
-    --foreground: #f9fafb;
-  }
-} */
+.dark {
+  --background: #030712;
+  --foreground: #f9fafb;
+}
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-roboto);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-oswald);
 }
 
 @layer utilities {
