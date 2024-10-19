@@ -13,10 +13,15 @@ type ProductivityResultProps = {
 const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLift, serviceSummary, productivity}: ProductivityResultProps) => {
   const headerClasses = 'bg-slate-900 text-white font-bold p-1.5'
   const dataClass = 'p-1.5'
-  const itemClass = 'grow bg-white md:border border-slate-900 '
-  const nameClass = 'md:bg-white md:border md:border-slate-900 bg-slate-900 text-white font-bold md:text-inherit md:font-normal'
-  const tableCellClass = `block before:content-[attr(data-cell)] md:table-cell md:before:content-[''] before:font-bold`
+  const itemClass = 'grow bg-white md:border border-slate-900'
+
+  const prodItemClass = 'md:border-2 md:border-slate-900 bg-white'
+  const nameClass = 'md:bg-white md:border-2 md:border-slate-900 bg-slate-900 text-white font-bold md:text-inherit md:font-normal'
+  const tableCellClass = `block before:content-[attr(data-cell)] before:font-bold md:table-cell md:before:content-[''] `
   const rowClass = `block mt-3 md:table-row`;
+
+  const servicePrepTimeClass = `${parseFloat(serviceSummary?.averagePreparationTime.total || '') < prepTarget ? 'bg-lime-400' : parseFloat(serviceSummary?.averagePreparationTime.total || '') <= prepTarget + 1 ? 'bg-amber-400' : 'bg-red-400'}`
+  
   return (
     <div className="rounded-lg p-4 bg-red-200 text-center">
       {serviceSummary && 
@@ -42,24 +47,16 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
         )
       }
 
-      {serviceSummary && (
-        // <table className="bg-white w-full border border-slate-900 text-center border-collapse overflow-x-auto">
-        //   <thead className="bg-slate-900 text-white font-bold uppercase">
-        //     <tr>
-        //       <th>Prep</th>
-        //       <th>Wait</th>
-        //       <th>Delivery</th>
-        //       <th>Orders</th>
-        //       <th>Lates</th>
-        //       <th>Items</th>
-        //       <th>Holds</th>
-        //     </tr>
-        //   </thead>
-        // </table>
+      {serviceSummary  && (
         <ul className="bg-white border border-slate-900 text-center flex flex-wrap">
           <li className={itemClass}>
             <div className={headerClasses}>Prep Time</div>
-            <div className={dataClass}>{serviceSummary.averagePreparationTime.total}</div>
+            <div className={`
+              ${dataClass}
+              ${servicePrepTimeClass}
+            `}>
+              {serviceSummary.averagePreparationTime.total}
+            </div>
           </li>
           <li className={itemClass}>
             <div className={headerClasses}>Wait Time</div>
@@ -103,12 +100,12 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
             {productivity.staffMembers.map((member) => (
               <tr key={member.name} className={`${rowClass} border border-slate-900`}>
                 <td className={`${nameClass} ${dataClass} ${tableCellClass} border border-slate-900`}>{member.name}</td>
-                <td className={`${itemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Prep Time: ">{member.prepTime}</td>
-                <td className={`${itemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Orders: ">{member.orders}</td>
-                <td className={`${itemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Items: ">{member.items}</td>
-                <td className={`${itemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Late Orders: ">{member.lateOrders} <span className="text-sm">({member.lateOrdersPercentage}%)</span></td>
-                <td className={`${itemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Longest Order: ">{member.longestOrder}</td>
-                <td className={`${itemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Hours Worked: ">{member.hoursWorked}</td>
+                <td className={`${prodItemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Prep Time: ">{member.prepTime}</td>
+                <td className={`${prodItemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Orders: ">{member.orders}</td>
+                <td className={`${prodItemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Items: ">{member.items}</td>
+                <td className={`${prodItemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Late Orders: ">{member.lateOrders} <span className="text-sm">({member.lateOrdersPercentage}%)</span></td>
+                <td className={`${prodItemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Longest Order: ">{member.longestOrder}</td>
+                <td className={`${prodItemClass} ${dataClass} ${tableCellClass} border border-slate-900`} data-cell="Hours Worked: ">{member.hoursWorked}</td>
               </tr>
             ))}
           </tbody>
