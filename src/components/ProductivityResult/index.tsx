@@ -1,5 +1,5 @@
 import { ServiceSummary, ProductivityData } from "@/types";
-
+import { convertTimeToMinutes } from "@/utilities/timeConverter";
 type ProductivityResultProps = {
   sales: number | null,
   salesTarget: number | null,
@@ -20,7 +20,19 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
   const tableCellClass = `block before:content-[attr(data-cell)] before:font-bold md:table-cell md:before:content-[''] `
   const rowClass = `block mt-3 md:table-row`;
 
-  const servicePrepTimeClass = `${parseFloat(serviceSummary?.averagePreparationTime.total || '') < prepTarget ? 'bg-lime-400' : parseFloat(serviceSummary?.averagePreparationTime.total || '') <= prepTarget + 1 ? 'bg-amber-400' : 'bg-red-400'}`
+  const hitTargetColour = 'bg-lime-400'
+  const overTargetColour = 'bg-amber-400'
+  const failedTargetColour = 'bg-red-400'
+
+  const servicePrepTimeClass = `${parseFloat(serviceSummary?.averagePreparationTime.total || '0') < prepTarget ? hitTargetColour : parseFloat(serviceSummary?.averagePreparationTime.total || '0') <= prepTarget + 1 ? overTargetColour : failedTargetColour}`
+  
+  const serviceWaitTimeClass = `${convertTimeToMinutes(serviceSummary?.averageWaitTime.total || '0') <= (foodLift ? 1.5 : 1) ? hitTargetColour : failedTargetColour }`
+
+  const serviceDeliveryTimeClass = `${convertTimeToMinutes(serviceSummary?.averageDeliveryTime.total || '0') >= 10 ? failedTargetColour : hitTargetColour}`
+
+  const serviceLatesClass = `${(serviceSummary?.numberOfLateOrders.total.percentage || 0) < lateTarget ? hitTargetColour : (serviceSummary?.numberOfLateOrders.total.percentage || 0) <= lateTarget + 5 ? overTargetColour : failedTargetColour}`
+
+  
   
   return (
     <div className="rounded-lg p-4 bg-red-200 text-center">
@@ -59,12 +71,12 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
             </div>
           </li>
           <li className={itemClass}>
-            <div className={headerClasses}>Wait Time</div>
-            <div className={dataClass}>{serviceSummary.averageWaitTime.total}</div>
+            <div className={`${headerClasses}`}>Wait Time</div>
+            <div className={`${dataClass} ${serviceWaitTimeClass}`}>{serviceSummary.averageWaitTime.total}</div>
           </li>
           <li className={itemClass}>
             <div className={headerClasses}>Delivery Time</div>
-            <div className={dataClass}>{serviceSummary.averageDeliveryTime.total}</div>
+            <div className={`${dataClass} ${serviceDeliveryTimeClass}`}>{serviceSummary.averageDeliveryTime.total}</div>
           </li>
           <li className={itemClass}>
             <div className={headerClasses}>Orders</div>
@@ -72,7 +84,7 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
           </li>
           <li className={itemClass}>
             <div className={headerClasses}>Lates</div>
-            <div className={`${dataClass}`}>{serviceSummary.numberOfLateOrders.total.count} <span className="text-sm">({serviceSummary.numberOfLateOrders.total.percentage}%)</span></div>
+            <div className={`${dataClass} ${serviceLatesClass}`}>{serviceSummary.numberOfLateOrders.total.count} <span className="text-sm">({serviceSummary.numberOfLateOrders.total.percentage}%)</span></div>
           </li>
           <li className={itemClass}>
             <div className={headerClasses}>Items</div>
@@ -88,6 +100,7 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
       {productivity && (
         <table className="text-left md:bg-white w-full md:border-2 border-slate-900 md:text-center mt-6 md:table ">
           <thead className="bg-slate-900 text-white font-bold hidden md:table-header-group">
+            <tr>
             <th className={headerClasses}>Name</th>
             <th className={headerClasses}>Prep Time</th>
             <th className={headerClasses}>Orders</th>
@@ -95,6 +108,7 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
             <th className={headerClasses}>Late Orders</th>
             <th className={headerClasses}>Longest Order</th>
             <th className={headerClasses}>Hours Worked</th>
+            </tr>
           </thead>
           <tbody>
             {productivity.staffMembers.map((member) => (
