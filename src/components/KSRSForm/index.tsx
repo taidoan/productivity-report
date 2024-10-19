@@ -1,63 +1,7 @@
 'use client';
 import { useState } from "react";
-
-type ServiceSummary = {
-  averageDeliveryTime: {
-    starters: number;
-    mains: number;
-    desserts: number;
-    total: number;
-  };
-  averageWaitTime: {
-    starters: number;
-    mains: number;
-    desserts: number;
-    total: number;
-  };
-  averagePreparationTime: {
-    starters: number;
-    mains: number;
-    desserts: number;
-    total: number;
-  };
-  numberOfOrders: number;
-  numberOfLateOrders: {
-    starters: { count: number; percentage: number };
-    mains: { count: number; percentage: number };
-    desserts: { count: number; percentage: number };
-  };
-  numberOfItems: number;
-  numberOfLateItems: {
-    starters: { count: number; percentage: number };
-    mains: { count: number; percentage: number };
-    desserts: { count: number; percentage: number };
-  };
-  checksOnTime: {
-    onTime: number;
-    early: number;
-    late: number;
-  };
-
-    chef1: {
-      averagePrepTime: number;
-      numberOfOrders: number;
-      ordersLate: { count: number; percentage: number };
-      numberOfItems: number;
-      itemsLate: { count: number; percentage: number };
-      ordersBumped: number;
-      manualHolds: number;
-    };
-    dispense: {
-      averagePrepTime: number;
-      numberOfOrders: number;
-      ordersLate: { count: number; percentage: number };
-      numberOfItems: number;
-      itemsLate: { count: number; percentage: number };
-      ordersBumped: number;
-      manualHolds: number;
-    };
-
-};
+import { ServiceSummary } from "@/types";
+import { convertToMinutesSeconds } from "@/utilities/timeConverter";
 
 type KSRSFormProps = {
   onSubmit: (data: [number | null, number, number, boolean, string, string, ServiceSummary]) => void;
@@ -97,45 +41,135 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
   };
 
   const parseServiceSummaryData = (data: string): ServiceSummary => {
-    const lines = data.split('\n').map(line => line.trim());
+    const lines = data.split('\n').map(line => line.trim()).filter(line => line !== '');
+    const firstLine = lines[0];
+    const firstPeriodIndex = firstLine.indexOf(".");
+    const siteName = firstLine.substring(0, firstPeriodIndex).trim();
+    const cleanSiteName = siteName.replace(/\*\*(.*?)\*\*/, '$1').trim();
+    const range = firstLine.substring(firstPeriodIndex + 1).trim();
+
+    const site = cleanSiteName || firstLine.trim();
+    lines.shift(); 
     
     const summary: ServiceSummary = {
-      averageDeliveryTime: { starters: 0, mains: 0, desserts: 0, total: 0 },
-      averageWaitTime: { starters: 0, mains: 0, desserts: 0, total: 0 },
-      averagePreparationTime: { starters: 0, mains: 0, desserts: 0, total: 0 },
+      siteName: site,
+      dateRange: range,
+      averageDeliveryTime: { 
+        starters: '0', 
+        mains: '0', 
+        desserts: '0', 
+        total: '0' 
+      },
+      averageWaitTime: { 
+        starters: '0', 
+        mains: '0', 
+        desserts: '0', 
+        total: '0' 
+      },
+      averagePreparationTime: { 
+        starters: '0', 
+        mains: '0', 
+        desserts: '0', 
+        total: '0' 
+      },
       numberOfOrders: 0,
-      numberOfLateOrders: { starters: { count: 0, percentage: 0 }, mains: { count: 0, percentage: 0 }, desserts: { count: 0, percentage: 0 } },
+      numberOfLateOrders: { 
+        starters: { 
+          count: 0, 
+          percentage: 0 
+        }, 
+        mains: { 
+          count: 0, 
+          percentage: 0 
+        }, 
+        desserts: { 
+          count: 0, 
+          percentage: 0 
+        } 
+      },
       numberOfItems: 0,
-      numberOfLateItems: { starters: { count: 0, percentage: 0 }, mains: { count: 0, percentage: 0 }, desserts: { count: 0, percentage: 0 } },
-      checksOnTime: { onTime: 0, early: 0, late: 0 },
-      chef1: { averagePrepTime: 0, numberOfOrders: 0, ordersLate: { count: 0, percentage: 0 }, numberOfItems: 0, itemsLate: { count: 0, percentage: 0 }, ordersBumped: 0, manualHolds: 0 },
-      dispense: { averagePrepTime: 0, numberOfOrders: 0, ordersLate: { count: 0, percentage: 0 }, numberOfItems: 0, itemsLate: { count: 0, percentage: 0 }, ordersBumped: 0, manualHolds: 0 },
+      numberOfLateItems: { 
+        starters: { 
+          count: 0, 
+          percentage: 0 
+        }, 
+        mains: { 
+          count: 0, 
+          percentage: 0 
+        }, 
+        desserts: { 
+          count: 0, 
+          percentage: 0 
+        } 
+      },
+      checksOnTime: { 
+        onTime: 0, 
+        early: 0, 
+        late: 0 
+      },
+      chef1: { 
+        averagePrepTime: '0', 
+        numberOfOrders: 0, 
+        ordersLate: 
+          { 
+            count: 0, 
+            percentage: 0 
+          }, 
+        numberOfItems: 0, 
+        itemsLate: 
+          { 
+            count: 0, 
+            percentage: 0 
+          }, 
+        ordersBumped: 0, 
+        manualHolds: 0 
+      },
+      dispense: { 
+        averagePrepTime: '0', 
+        numberOfOrders: 0, 
+        ordersLate: { 
+          count: 0, 
+          percentage: 0 
+        }, 
+        numberOfItems: 0, 
+        itemsLate: { 
+          count: 0, 
+          percentage: 0 
+        }, 
+        ordersBumped: 0, 
+        manualHolds: 0 
+      },
     };
   
-    // Parse the lines to fill the summary object
     for (const line of lines) {
       const [key, ...values] = line.split('\t').map(v => v.trim());
   
       switch (key) {
         case 'Average Delivery Time':
-          summary.averageDeliveryTime.starters = parseFloat(values[0]);
-          summary.averageDeliveryTime.mains = parseFloat(values[1]);
-          summary.averageDeliveryTime.desserts = parseFloat(values[2]);
-          summary.averageDeliveryTime.total = parseFloat(values[3]);
+          const Delivery = summary.averageDeliveryTime
+
+          Delivery.starters = convertToMinutesSeconds(parseFloat(values[0]));
+          Delivery.mains = convertToMinutesSeconds(parseFloat(values[1]));
+          Delivery.desserts = convertToMinutesSeconds(parseFloat(values[2]));
+          Delivery.total = convertToMinutesSeconds(parseFloat(values[3]));
           break;
   
         case 'Average Wait Time':
-          summary.averageWaitTime.starters = parseFloat(values[0]);
-          summary.averageWaitTime.mains = parseFloat(values[1]);
-          summary.averageWaitTime.desserts = parseFloat(values[2]);
-          summary.averageWaitTime.total = parseFloat(values[3]);
+          const Wait = summary.averageWaitTime
+
+          Wait.starters = convertToMinutesSeconds(parseFloat(values[0]));
+          Wait.mains = convertToMinutesSeconds(parseFloat(values[1]));
+          Wait.desserts = convertToMinutesSeconds(parseFloat(values[2]));
+          Wait.total = convertToMinutesSeconds(parseFloat(values[3]));
           break;
   
         case 'Average Preparation Time':
-          summary.averagePreparationTime.starters = parseFloat(values[0]);
-          summary.averagePreparationTime.mains = parseFloat(values[1]);
-          summary.averagePreparationTime.desserts = parseFloat(values[2]);
-          summary.averagePreparationTime.total = parseFloat(values[3]);
+          const Prep = summary.averagePreparationTime
+
+          Prep.starters = convertToMinutesSeconds(parseFloat(values[0]));
+          Prep.mains = convertToMinutesSeconds(parseFloat(values[1]));
+          Prep.desserts = convertToMinutesSeconds(parseFloat(values[2]));
+          Prep.total = convertToMinutesSeconds(parseFloat(values[3]));
           break;
   
         case 'No. of Orders':
@@ -143,12 +177,19 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
           break;
   
         case 'No. of Late Orders':
-          summary.numberOfLateOrders.starters.count = parseInt(values[0], 10);
-          summary.numberOfLateOrders.starters.percentage = parseFloat(values[1]);
-          summary.numberOfLateOrders.mains.count = parseInt(values[2], 10);
-          summary.numberOfLateOrders.mains.percentage = parseFloat(values[3]);
-          summary.numberOfLateOrders.desserts.count = parseInt(values[4], 10);
-          summary.numberOfLateOrders.desserts.percentage = parseFloat(values[5]);
+          const Orders = summary.numberOfOrders
+
+          const Starters = summary.numberOfLateOrders.starters
+          Starters.count = parseInt(values[0], 10);
+          Starters.percentage = Math.round((Starters.count / Orders) * 100)
+
+          const Mains = summary.numberOfLateOrders.mains
+          Mains.count = parseInt(values[1], 10);
+          Mains.percentage = Math.round((Mains.count / Orders) * 100)
+
+          const Desserts = summary.numberOfLateOrders.desserts
+          Desserts.count = parseInt(values[2], 10);
+          Desserts.percentage = Math.round((Desserts.count / Orders) * 100)
           break;
   
         case 'No. of Items':
@@ -156,12 +197,20 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
           break;
   
         case 'No. of Late Items':
-          summary.numberOfLateItems.starters.count = parseInt(values[0], 10);
-          summary.numberOfLateItems.starters.percentage = parseFloat(values[1]);
-          summary.numberOfLateItems.mains.count = parseInt(values[2], 10);
-          summary.numberOfLateItems.mains.percentage = parseFloat(values[3]);
-          summary.numberOfLateItems.desserts.count = parseInt(values[4], 10);
-          summary.numberOfLateItems.desserts.percentage = parseFloat(values[5]);
+          const Items = summary.numberOfItems
+
+          const StarterItems = summary.numberOfLateItems.starters
+          StarterItems.count = parseInt(values[0], 10);
+          StarterItems.percentage = Math.round((StarterItems.count / Items) * 100)
+
+          const MainsItems = summary.numberOfLateItems.mains
+          MainsItems.count = parseInt(values[1], 10);
+          MainsItems.percentage = Math.round((MainsItems.count / Items) * 100)
+
+          const DessertItems = summary.numberOfLateItems.desserts
+          DessertItems.count = parseInt(values[2], 10);
+          DessertItems.percentage = Math.round((DessertItems.count / Items) * 100)
+
           break;
   
         case 'Table/Meal Checks On-Time':
@@ -171,27 +220,33 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
           break;
   
         case 'CHEF1':
-          summary.chef1.averagePrepTime = parseFloat(values[0]);
-          summary.chef1.numberOfOrders = parseInt(values[1], 10);
-          summary.chef1.ordersLate.count = parseInt(values[2], 10);
-          summary.chef1.ordersLate.percentage = parseFloat(values[3]);
-          summary.chef1.numberOfItems = parseInt(values[4], 10);
-          summary.chef1.itemsLate.count = parseInt(values[5], 10);
-          summary.chef1.itemsLate.percentage = parseFloat(values[6]);
-          summary.chef1.ordersBumped = parseInt(values[7], 10);
-          summary.chef1.manualHolds = parseInt(values[8], 10);
+          const Chef = summary.chef1
+
+          Chef.averagePrepTime = convertToMinutesSeconds(parseFloat(values[0]));
+          Chef.numberOfOrders = parseInt(values[1], 10);
+          Chef.ordersLate.count = parseInt(values[2], 10);
+          Chef.ordersLate.percentage = Math.round((Chef.ordersLate.count / Chef.numberOfOrders) * 100);
+
+          Chef.numberOfItems = parseInt(values[3], 10);
+          Chef.itemsLate.count = parseInt(values[4], 10);
+          Chef.itemsLate.percentage = Math.round((Chef.itemsLate.count / Chef.numberOfItems) * 100);
+
+          Chef.ordersBumped = parseInt(values[5], 10);
+          Chef.manualHolds = parseInt(values[6], 10);
           break;
   
         case 'DISPENSE':
-          summary.dispense.averagePrepTime = parseFloat(values[0]);
-          summary.dispense.numberOfOrders = parseInt(values[1], 10);
-          summary.dispense.ordersLate.count = parseInt(values[2], 10);
-          summary.dispense.ordersLate.percentage = parseFloat(values[3]);
-          summary.dispense.numberOfItems = parseInt(values[4], 10);
-          summary.dispense.itemsLate.count = parseInt(values[5], 10);
-          summary.dispense.itemsLate.percentage = parseFloat(values[6]);
-          summary.dispense.ordersBumped = parseInt(values[7], 10);
-          summary.dispense.manualHolds = parseInt(values[8], 10);
+          const Dispense = summary.dispense
+
+          Dispense.averagePrepTime = convertToMinutesSeconds(parseFloat(values[0]));
+          Dispense.numberOfOrders = parseInt(values[1], 10);
+          Dispense.ordersLate.count = parseInt(values[2], 10);
+          Dispense.ordersLate.percentage = Math.round((Dispense.ordersLate.count / Dispense.numberOfOrders) * 100)
+          Dispense.numberOfItems = parseInt(values[3], 10);
+          Dispense.itemsLate.count = parseInt(values[4], 10);
+          Dispense.itemsLate.percentage = Math.round((Dispense.itemsLate.count / Dispense.numberOfItems) * 100)
+          Dispense.ordersBumped = parseInt(values[5], 10);
+          Dispense.manualHolds = parseInt(values[6], 10);
           break;
   
         default:

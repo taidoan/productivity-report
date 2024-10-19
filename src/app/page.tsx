@@ -5,6 +5,7 @@ import Footer from "@/layout/Footer";
 import Header from "@/layout/Header";
 import { Roboto_Flex } from 'next/font/google';
 import { Oswald } from "next/font/google";
+import { ServiceSummary } from "@/types";
 
 const roboto = Roboto_Flex({
   subsets: ['latin'],
@@ -19,15 +20,17 @@ const oswald = Oswald({
 });
 
 const handleFormSubmit = (data: [number | null, number, number, boolean, string, string, ServiceSummary]) => {
-  console.log('Form submitted with data:', data);
   console.log('Sales:', data[0]);
   console.log('Late Target:', data[1]);
   console.log('Prep Target:', data[2]);
   console.log('Food Lift:', data[3]);
-
-  // Log the parsed Service Summary
-  const serviceSummary = data[6]; // The ServiceSummary object
+  const serviceSummary = data[6];
   console.log('Parsed Service Summary:', serviceSummary);
+  console.log('Delivery Time:', serviceSummary.averageDeliveryTime.total)
+  console.log('Prep Time:', serviceSummary.averagePreparationTime.total)
+  console.log('Wait Time:', serviceSummary.averageWaitTime.total)
+  console.log('Total Orders:', serviceSummary.numberOfOrders)
+  console.log('Manual Holds:', serviceSummary.chef1.manualHolds)
 };
 
 export default function Home() {
