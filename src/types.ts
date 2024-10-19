@@ -24,12 +24,20 @@ export type ServiceSummary = {
     starters: { count: number; percentage: number };
     mains: { count: number; percentage: number };
     desserts: { count: number; percentage: number };
+    total: {
+      count: number;
+      percentage: number;
+    };
   };
   numberOfItems: number;
   numberOfLateItems: {
     starters: { count: number; percentage: number };
     mains: { count: number; percentage: number };
     desserts: { count: number; percentage: number };
+    total: {
+      count: number;
+      percentage: number;
+    };
   };
   checksOnTime: {
     onTime: number;
@@ -55,4 +63,20 @@ export type ServiceSummary = {
     ordersBumped: number;
     manualHolds: number;
   };
+};
+
+export type StaffMember = {
+  name: string;
+  prepTime: string;
+  orders: number;
+  items: number;
+  lateOrders: number;
+  lateOrdersPercentage: number;
+  longestOrder: string;
+  hoursWorked: string;
+};
+
+export type ProductivityData = {
+  range?: string;
+  staffMembers: StaffMember[];
 };

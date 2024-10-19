@@ -5,7 +5,9 @@ import Footer from "@/layout/Footer";
 import Header from "@/layout/Header";
 import { Roboto_Flex } from 'next/font/google';
 import { Oswald } from "next/font/google";
-import { ServiceSummary } from "@/types";
+import { ServiceSummary, ProductivityData } from "@/types";
+import { useState } from "react";
+import ProductivityResult from "@/components/ProductivityResult";
 
 const roboto = Roboto_Flex({
   subsets: ['latin'],
@@ -19,26 +21,40 @@ const oswald = Oswald({
   display: 'swap',
 });
 
-const handleFormSubmit = (data: [number | null, number, number, boolean, string, string, ServiceSummary]) => {
-  console.log('Sales:', data[0]);
-  console.log('Late Target:', data[1]);
-  console.log('Prep Target:', data[2]);
-  console.log('Food Lift:', data[3]);
-  const serviceSummary = data[6];
-  console.log('Parsed Service Summary:', serviceSummary);
-  console.log('Delivery Time:', serviceSummary.averageDeliveryTime.total)
-  console.log('Prep Time:', serviceSummary.averagePreparationTime.total)
-  console.log('Wait Time:', serviceSummary.averageWaitTime.total)
-  console.log('Total Orders:', serviceSummary.numberOfOrders)
-  console.log('Manual Holds:', serviceSummary.chef1.manualHolds)
-};
-
 export default function Home() {
+  const [formData, setFormData] = useState<[number | null, number | null, number, number, boolean, ServiceSummary, ProductivityData] | null>(null);
+
+  const handleFormSubmit = (data: [number | null, number | null, number, number, boolean, ServiceSummary, ProductivityData]) => {
+    setFormData(data);
+    console.log('Submitted Data:', data);
+  };
+
+  const [
+    sales = null,
+    salesTarget = null,
+    lateTarget = 0,
+    prepTarget = 0,
+    foodLift = false,
+    serviceSummary = null,
+    productivityData = null
+  ] = formData || [];
+
   return (
     <div className="w-10/12 lg:w-11/12 xl:w-3/5 mx-auto">
       <Header />
       <main className={`${roboto.variable} ${oswald.variable}`}>
         <KSRSForm onSubmit={handleFormSubmit} />
+        {formData && (
+          <ProductivityResult 
+            sales={sales} 
+            salesTarget={salesTarget}
+            lateTarget={lateTarget} 
+            prepTarget={prepTarget} 
+            foodLift={foodLift} 
+            serviceSummary={serviceSummary} 
+            productivity={productivityData} 
+          />
+        )}
         <DarkModeToggle />
       </main>
       <Footer />

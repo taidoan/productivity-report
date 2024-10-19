@@ -1,14 +1,15 @@
 'use client';
 import { useState } from "react";
-import { ServiceSummary } from "@/types";
-import { convertToMinutesSeconds } from "@/utilities/timeConverter";
+import { ServiceSummary, ProductivityData } from "@/types";
+import { convertToHHMM, convertToMinutesSeconds } from "@/utilities/timeConverter";
 
 type KSRSFormProps = {
-  onSubmit: (data: [number | null, number, number, boolean, string, string, ServiceSummary]) => void;
+  onSubmit: (data: [number | null, number | null, number, number, boolean, ServiceSummary, ProductivityData]) => void;
 };
 
 const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
   const [sales, setSales] = useState<number | null>(null);
+  const [salesTarget, setSalesTarget] = useState<number | null>(null)
   const [lateTarget, setLateTarget] = useState<number>(25);
   const [prepTarget, setPrepTarget] = useState<number>(8);
   const [lift, setLift] = useState<boolean>(false);
@@ -19,6 +20,11 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
     const value = event.target.value;
     setSales(value ? Number(value) : null);
   };
+
+  const handleSalesTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value
+    setSalesTarget(value ? Number(value) : null)
+  }
 
   const handleLatesChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLateTarget(Number(event.target.value));
@@ -85,7 +91,11 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
         desserts: { 
           count: 0, 
           percentage: 0 
-        } 
+        },
+        total: {
+          count: 0,
+          percentage: 0
+        },
       },
       numberOfItems: 0,
       numberOfLateItems: { 
@@ -100,7 +110,11 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
         desserts: { 
           count: 0, 
           percentage: 0 
-        } 
+        },
+        total: {
+          count: 0,
+          percentage: 0,
+        }
       },
       checksOnTime: { 
         onTime: 0, 
@@ -190,6 +204,9 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
           const Desserts = summary.numberOfLateOrders.desserts
           Desserts.count = parseInt(values[2], 10);
           Desserts.percentage = Math.round((Desserts.count / Orders) * 100)
+
+          summary.numberOfLateOrders.total.count = parseInt(values[3], 10) 
+          summary.numberOfLateOrders.total.percentage = Math.round((summary.numberOfLateOrders.total.count / Orders) * 100)
           break;
   
         case 'No. of Items':
@@ -210,6 +227,9 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
           const DessertItems = summary.numberOfLateItems.desserts
           DessertItems.count = parseInt(values[2], 10);
           DessertItems.percentage = Math.round((DessertItems.count / Items) * 100)
+
+          summary.numberOfLateItems.total.count = parseInt(values[3], 10)
+          summary.numberOfLateItems.total.percentage = Math.round((summary.numberOfLateItems.total.count / Items) * 100)
 
           break;
   
@@ -257,15 +277,61 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
     return summary;
   };
 
+  const parseProductivityData = (data: string): ProductivityData => {
+    const lines = data.split('\n').map(line => line.trim()).filter(line => line !== '');
+
+    const firstLine = lines[0];
+    const firstPeriodIndex = firstLine.indexOf(".");
+    const range = firstLine.substring(firstPeriodIndex + 1).trim();
+
+    lines.shift()
+    lines.shift()
+
+    const productivity: ProductivityData = {
+      range: range,
+      staffMembers: []
+    }
+    
+    for (const line of lines) {
+      const [station, name, avgTime, noOrders, noItems, ordersLate, longestOrder, hoursWorked] = line.split('\t').map(v => v.trim());
+
+      if (station && name) {
+        const lateOrdersCount = parseInt(ordersLate, 10);
+        const totalOrders = parseInt(noOrders, 10);
+  
+        productivity.staffMembers.push({
+          name,
+          prepTime: convertToMinutesSeconds(avgTime),
+          orders: totalOrders,
+          items: parseInt(noItems, 10),
+          lateOrders: lateOrdersCount,
+          lateOrdersPercentage: (totalOrders > 0) ? Math.round((lateOrdersCount / totalOrders) * 100) : 0,
+          longestOrder: convertToMinutesSeconds(longestOrder),
+          hoursWorked: convertToHHMM(hoursWorked),
+        });
+      }
+    }
+  
+    return productivity;
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const parsedServiceSummary = parseServiceSummaryData(serviceData);
-    onSubmit([sales, lateTarget, prepTarget, lift, serviceData, prodData, parsedServiceSummary]);
+    const parsedProductivityData = parseProductivityData(prodData)
+    onSubmit([sales, salesTarget, lateTarget, prepTarget, lift, parsedServiceSummary, parsedProductivityData]);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-    <label>Week Sales:</label>
+      <label htmlFor="">Sales Target:</label>
+      <input 
+        type="number"
+        value={salesTarget !== null ? salesTarget : ''}
+        onChange={handleSalesTargetChange} 
+      />
+
+    <label>Actual Sales:</label>
     <input 
       type="number" 
       value={sales !== null ? sales : ''} 
