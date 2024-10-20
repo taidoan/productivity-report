@@ -322,53 +322,72 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
     onSubmit([sales, salesTarget, lateTarget, prepTarget, lift, parsedServiceSummary, parsedProductivityData]);
   };
 
+  const formFieldClass = `rounded-lg bg-grey-200 p-3 grow flex flex-col gap-2`
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="">Sales Target:</label>
-      <input 
-        type="number"
-        value={salesTarget !== null ? salesTarget : ''}
-        onChange={handleSalesTargetChange} 
-      />
+    <form onSubmit={handleSubmit} className={`flex flex-wrap gap-4`}>
+      <div className={formFieldClass}>
+        <label htmlFor="salesTarget">Sales Target:</label>
+        <input 
+          type="number"
+          id="salesTarget"
+          value={salesTarget !== null ? salesTarget : ''}
+          onChange={handleSalesTargetChange} 
+        />
+      </div>
 
-    <label>Actual Sales:</label>
-    <input 
-      type="number" 
-      value={sales !== null ? sales : ''} 
-      onChange={handleSalesChange} 
-    />
+      <div className={formFieldClass}>
+        <label htmlFor="actualSales">Actual Sales:</label>
+        <input 
+          type="number"
+          id="actualSales"
+          value={sales !== null ? sales : ''} 
+          onChange={handleSalesChange} 
+        />
+      </div>
 
-    <label>Lates Target:</label>
-    <select value={lateTarget} onChange={handleLatesChange}>
-      <option value={10}>10%</option>
-      <option value={15}>15%</option>
-      <option value={20}>20%</option>
-      <option value={25}>25%</option>
-      <option value={30}>30%</option>
-    </select>
+      <div className={formFieldClass}>
+        <label htmlFor="latesTarget">Lates Target:</label>
+        <select value={lateTarget} id="latesTarget" onChange={handleLatesChange}>
+          <option value={10}>10%</option>
+          <option value={15}>15%</option>
+          <option value={20}>20%</option>
+          <option value={25}>25%</option>
+          <option value={30}>30%</option>
+        </select>
+      </div>
 
-    <label>Prep Target:</label>
-    <select value={prepTarget} onChange={handlePrepChange}>
-      <option value={6}>6:00</option>
-      <option value={7}>7:00</option>
-      <option value={8}>8:00</option>
-      <option value={9}>9:00</option>
-    </select>
+      <div className={formFieldClass}>
+        <label htmlFor="prepTarget">Prep Target:</label>
+        <select value={prepTarget} id="prepTarget" onChange={handlePrepChange}>
+          <option value={6}>6:00</option>
+          <option value={7}>7:00</option>
+          <option value={8}>8:00</option>
+          <option value={9}>9:00</option>
+        </select>
+      </div>
 
-    <label>Food Lift:</label>
-    <input 
-      type="checkbox" 
-      checked={lift} 
-      onChange={handleLiftChange}
-    />
+      <div className={formFieldClass}>
+        <label htmlFor="foodLift">Food Lift:</label>
+        <input 
+          type="checkbox"
+          id="foodLift"
+          checked={lift} 
+          onChange={handleLiftChange}
+        />
+      </div>
 
-    <label>Service Summary Data:</label>
-    <textarea name="" id="" value={serviceData} onChange={handleServiceChange}></textarea>
+      <div className={formFieldClass}>
+        <label htmlFor="serviceSummaryData">Service Summary Data:</label>
+        <textarea id="serviceSummaryData" value={serviceData} onChange={handleServiceChange}></textarea>
+      </div>
 
-    <label htmlFor="">Productivity Data:</label>
-    <textarea name="" id="" value={prodData} onChange={handleProdChange}></textarea>        
+      <div className={formFieldClass}>
+        <label htmlFor="prodData">Productivity Data:</label>
+        <textarea id="prodData" value={prodData} onChange={handleProdChange}></textarea>        
+      </div>
 
-    <button type="submit">Submit</button>
+      <button type="submit" className="bg-primary-600 text-white rounded-lg">Submit</button>
   </form>
   );
 };

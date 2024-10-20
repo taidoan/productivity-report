@@ -25,7 +25,7 @@ export type ServiceSummary = {
     mains: { count: number; percentage: number };
     desserts: { count: number; percentage: number };
     total: {
-      count: number;
+      count: number | null;
       percentage: number;
     };
   };
@@ -35,7 +35,7 @@ export type ServiceSummary = {
     mains: { count: number; percentage: number };
     desserts: { count: number; percentage: number };
     total: {
-      count: number;
+      count: number | null;
       percentage: number;
     };
   };

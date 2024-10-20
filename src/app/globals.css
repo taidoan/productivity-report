@@ -3,21 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --background: #e5e7eb;
-  --foreground: #020617;
+  --background: #e7e7e7;
+  --foreground: #141414;
 
-  --clr-good: lime;
+  /* --clr-good: lime;
   --clr-warning: orange;
-  --clr-failure: red;
+  --clr-failure: red; */
 }
 .dark {
-  --background: #030712;
-  --foreground: #f9fafb;
+  --background: #141414;
+  --foreground: #f6f6f6;
+  --primary: 255;
 }
 
 body {
-  color: var(--foreground);
   background: var(--background);
+  color: var(--foreground);
   font-family: var(--font-roboto);
 }
 

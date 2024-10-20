@@ -27,6 +27,7 @@ export default function Home() {
   const handleFormSubmit = (data: [number | null, number | null, number, number, boolean, ServiceSummary, ProductivityData]) => {
     setFormData(data);
     console.log('Submitted Data:', data);
+    console.log('Prep Target:', data[3])
   };
 
   const [
@@ -35,8 +36,8 @@ export default function Home() {
     lateTarget = 0,
     prepTarget = 0,
     foodLift = false,
-    serviceSummary = null,
-    productivityData = null
+    serviceSummary = {} as ServiceSummary, 
+    productivityData = {} as ProductivityData
   ] = formData || [];
 
   return (
