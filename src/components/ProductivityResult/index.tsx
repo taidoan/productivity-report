@@ -67,8 +67,7 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
   const serviceLatesClass = getLatesClass(serviceSummary?.numberOfLateOrders.total.percentage, lateTarget)
   
   return (
-    <div className="rounded-xl p-6 bg-gray-50 text-center shadow-lg dark:bg-grey-900
-
+    <div className="
 ">
       {serviceSummary && 
         (

@@ -1,13 +1,14 @@
 'use client';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ServiceSummary, ProductivityData } from "@/types";
 import { convertToHHMM, convertToMinutesSeconds } from "@/utilities/timeConverter";
 
 type KSRSFormProps = {
-  onSubmit: (data: [number | null, number | null, number, number, boolean, ServiceSummary, ProductivityData]) => void;
+  onSubmit: (data: [number | null, number | null, number, number, boolean, ServiceSummary, ProductivityData, string, string]) => void;
+  initialValues: any
 };
 
-const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
+const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
   const [sales, setSales] = useState<number | null>(null);
   const [salesTarget, setSalesTarget] = useState<number | null>(null)
   const [lateTarget, setLateTarget] = useState<number>(25);
@@ -15,6 +16,19 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
   const [lift, setLift] = useState<boolean>(false);
   const [serviceData, setServiceData] = useState<string>('');
   const [prodData, setProdData] = useState<string>('');
+  const [copiedServiceData, setCopiedServiceData] = useState<string>('');
+  const [copiedProdData, setCopiedProdData] = useState<string>('');
+
+  useEffect(() => {
+    setSales(initialValues.sales);
+    setSalesTarget(initialValues.salesTarget);
+    setLateTarget(initialValues.lateTarget);
+    setPrepTarget(initialValues.prepTarget);
+    setLift(initialValues.foodLift);
+    setServiceData(initialValues.copiedServiceData),
+    setProdData(initialValues.copiedProdData)
+  }, [initialValues])
+
 
   const handleSalesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -40,10 +54,12 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
 
   const handleServiceChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setServiceData(event.target.value);
+    setCopiedServiceData(event.target.value)
   };
 
   const handleProdChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setProdData(event.target.value);
+    setCopiedProdData(event.target.value)
   };
 
   const parseServiceSummaryData = (data: string): ServiceSummary => {
@@ -319,76 +335,85 @@ const KSRSForm = ({ onSubmit }: KSRSFormProps) => {
     event.preventDefault();
     const parsedServiceSummary = parseServiceSummaryData(serviceData);
     const parsedProductivityData = parseProductivityData(prodData)
-    onSubmit([sales, salesTarget, lateTarget, prepTarget, lift, parsedServiceSummary, parsedProductivityData]);
+    onSubmit([sales, salesTarget, lateTarget, prepTarget, lift, parsedServiceSummary, parsedProductivityData, copiedServiceData, copiedProdData]);
   };
 
-  const formFieldClass = `rounded-lg bg-grey-200 p-3 grow flex flex-col gap-2`
+  const formFieldClass = `rounded-lg bg-grey-100 p-4 px-4 grow flex flex-col gap-2 gap-y-3 dark:bg-grey-700`
+  const labelClass = `font-bold leading-4 content-center`
+  const fieldClass = `rounded-lg p-3 py-2 shadow-md text-grey-600 dark:bg-grey-900 dark:shadow-none dark:text-grey-200 placeholder:text-grey-300 dark:placeholder:text-grey-400 focus:outline-2 focus:outline-primary-600 focus:ring-inset focus:outline-none focus:shadow-none focus:outline-offset-0 dark:focus:outline-primary-400`
 
   return (
-    <form onSubmit={handleSubmit} className={`flex flex-wrap gap-4`}>
-      <div className={formFieldClass}>
-        <label htmlFor="salesTarget">Sales Target:</label>
+    <div className={``}>
+      <form onSubmit={handleSubmit} className={`flex flex-wrap gap-4 md:grid grid-cols-4`}>
+      <div className={`${formFieldClass} col-span-2`}>
+        <label htmlFor="salesTarget" className={`${labelClass}`}>Sales Target:</label>
         <input 
           type="number"
           id="salesTarget"
           value={salesTarget !== null ? salesTarget : ''}
           onChange={handleSalesTargetChange} 
+          className={`${fieldClass}`}
         />
       </div>
 
-      <div className={formFieldClass}>
-        <label htmlFor="actualSales">Actual Sales:</label>
+      <div className={`${formFieldClass} col-span-2`}>
+        <label htmlFor="actualSales" className={`${labelClass}`}>Actual Sales:</label>
         <input 
           type="number"
           id="actualSales"
           value={sales !== null ? sales : ''} 
           onChange={handleSalesChange} 
+          className={`${fieldClass}`}
         />
       </div>
 
-      <div className={formFieldClass}>
-        <label htmlFor="latesTarget">Lates Target:</label>
-        <select value={lateTarget} id="latesTarget" onChange={handleLatesChange}>
-          <option value={10}>10%</option>
-          <option value={15}>15%</option>
-          <option value={20}>20%</option>
-          <option value={25}>25%</option>
-          <option value={30}>30%</option>
-        </select>
+      <div className={`flex flex-col gap-4 flex-wrap w-full md:flex-row md:col-span-4`}>
+        <div className={`${formFieldClass} !flex-row gap-x-3`}>
+          <label htmlFor="latesTarget" className={`${labelClass}`}>Lates Target:</label>
+          <select value={lateTarget} id="latesTarget" onChange={handleLatesChange} className={`${fieldClass} grow`}>
+            <option value={10}>10%</option>
+            <option value={15}>15%</option>
+            <option value={20}>20%</option>
+            <option value={25}>25%</option>
+            <option value={30}>30%</option>
+          </select>
+        </div>
+
+        <div className={`${formFieldClass} !flex-row gap-x-3`}>
+          <label htmlFor="prepTarget" className={`${labelClass}`}>Prep Target:</label>
+          <select value={prepTarget} id="prepTarget" onChange={handlePrepChange} className={`${fieldClass} grow`}>
+            <option value={6}>6:00</option>
+            <option value={7}>7:00</option>
+            <option value={8}>8:00</option>
+            <option value={9}>9:00</option>
+          </select>
+        </div>
+
+        <div className={`${formFieldClass} !flex-row gap-x-3 justify-center`}>
+          <label htmlFor="foodLift" className={`${labelClass}`}>Food Lift:</label>
+          <input 
+            type="checkbox"
+            id="foodLift"
+            checked={lift} 
+            onChange={handleLiftChange}
+            className="dark:accent-primary-400 dark:focus:accent-primary-400 accent-primary-600 focus:accent-primary-600"
+          />
+        </div>
       </div>
 
-      <div className={formFieldClass}>
-        <label htmlFor="prepTarget">Prep Target:</label>
-        <select value={prepTarget} id="prepTarget" onChange={handlePrepChange}>
-          <option value={6}>6:00</option>
-          <option value={7}>7:00</option>
-          <option value={8}>8:00</option>
-          <option value={9}>9:00</option>
-        </select>
+      <div className={`${formFieldClass} col-span-4`}>
+        <label htmlFor="serviceSummaryData" className={`${labelClass}`}>Service Summary Data:</label>
+        <textarea id="serviceSummaryData" value={serviceData} onChange={handleServiceChange} rows={13} placeholder="Copy and paste the service summary report here" className={`${fieldClass}`}></textarea>
       </div>
 
-      <div className={formFieldClass}>
-        <label htmlFor="foodLift">Food Lift:</label>
-        <input 
-          type="checkbox"
-          id="foodLift"
-          checked={lift} 
-          onChange={handleLiftChange}
-        />
-      </div>
-
-      <div className={formFieldClass}>
-        <label htmlFor="serviceSummaryData">Service Summary Data:</label>
-        <textarea id="serviceSummaryData" value={serviceData} onChange={handleServiceChange}></textarea>
-      </div>
-
-      <div className={formFieldClass}>
-        <label htmlFor="prodData">Productivity Data:</label>
-        <textarea id="prodData" value={prodData} onChange={handleProdChange}></textarea>        
+      <div className={`${formFieldClass} col-span-4`}>
+        <label htmlFor="prodData" className={`${labelClass}`}>Productivity Data:</label>
+        <textarea id="prodData" value={prodData} onChange={handleProdChange} placeholder="Copy and paste productivity report here" rows={6}className={`${fieldClass}`}></textarea>        
       </div>
 
       <button type="submit" className="bg-primary-600 text-white rounded-lg">Submit</button>
-  </form>
+    </form>
+    </div>
   );
 };
 
