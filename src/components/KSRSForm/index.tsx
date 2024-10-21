@@ -5,7 +5,15 @@ import { convertToHHMM, convertToMinutesSeconds } from "@/utilities/timeConverte
 
 type KSRSFormProps = {
   onSubmit: (data: [number | null, number | null, number, number, boolean, ServiceSummary, ProductivityData, string, string]) => void;
-  initialValues: any
+  initialValues: {
+    sales: number | null;
+    salesTarget: number | null;
+    lateTarget: number;
+    prepTarget: number;
+    foodLift: boolean;
+    copiedServiceData: string;
+    copiedProdData: string;
+  }
 };
 
 const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
@@ -421,7 +429,7 @@ const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
         <textarea id="prodData" value={prodData} onChange={handleProdChange} placeholder="Copy and paste productivity report here" rows={6}className={`${fieldClass}`}></textarea>        
       </div>
 
-      <button type="submit" className="font-bold rounded-lg px-5 py-3 text-grey-500 bg-grey-100 hover:bg-slate-600 ease-in-out duration-300 hover:text-white mx-auto block full-width col-span-4 my-2 dark:bg-grey-500 dark:text-grey-900 dark:hover:bg-primary-600">Submit</button>
+      <button type="submit" className="font-bold rounded-lg px-5 py-3 text-grey-500 bg-grey-100 hover:bg-slate-600 ease-in-out duration-300 hover:text-white mx-auto block full-width col-span-4 my-2 dark:bg-grey-500 dark:text-grey-900 dark:hover:bg-primary-600 dark:hover:text-white">Submit</button>
     </form>
     </div>
   );

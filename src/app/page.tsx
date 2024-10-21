@@ -6,8 +6,9 @@ import Header from "@/layout/Header";
 import { Roboto_Flex } from 'next/font/google';
 import { Oswald } from "next/font/google";
 import { ServiceSummary, ProductivityData } from "@/types";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ProductivityResult from "@/components/ProductivityResult";
+import printArea from "@/utilities/printArea";
 
 const roboto = Roboto_Flex({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function Home() {
     setFormData(data);
     setFormSubmitted(true);
     setActiveTab('result');
+    console.log(data)
   };
 
   const [
@@ -50,7 +52,7 @@ const disabledClass = `bg-grey-50 text-grey-200 border-grey-100 dark:border-grey
 
 const enabledClass = `bg-gradient-to-t from-grey-100 to-grey-200 border-grey-200 dark:bg-gradient-to-t dark:from-grey-500 dark:to-grey-700 dark:text-grey-100 dark:border-grey-500 dark:shadow-inner`;
 
-const hoverClass = `hover:bg-gradient-to-b hover:from-slate-700 hover:to-slate-600 hover:text-white hover:border-slate-600 dark:hover:from-slate-600 dark:hover:to-slate-500 dark:hover:border-slate-500`;
+const hoverClass = `hover:bg-gradient-to-b hover:from-slate-700 hover:to-slate-600 hover:text-white hover:border-slate-600 dark:hover:bg-gradient-to-b dark:hover:border-primary-600 dark:hover:from-primary-700 dark:hover:to-primary-600`;
 
 const buttonClass = (isDisabled: boolean) =>
   `${baseClass} ${isDisabled ? disabledClass : `${enabledClass} ${hoverClass}`}`;
@@ -65,10 +67,10 @@ const buttonActiveClass = `
 
 
   return (
-    <div className="w-10/12 lg:w-11/12 xl:w-3/5 mx-auto">
+    <div className={`w-10/12 lg:w-11/12 xl:w-4/6 mx-auto print:w-full print:!bg-white print:mx-0 ${roboto.variable} ${oswald.variable}`}>
       <Header />
-      <main className={`${roboto.variable} ${oswald.variable} rounded-2xl p-6 bg-gray-50 text-center shadow-lg dark:bg-grey-900`}>
-        <div className="flex justify-center gap-x-4 mb-4">
+      <main className={`rounded-2xl p-6 bg-gray-50 text-center shadow-lg dark:bg-grey-900 print:bg-white`}>
+        <div className="flex justify-center gap-x-4 mb-4 print:mb-0">
           <button 
             className={`${activeTab === 'dataEntry' ? buttonActiveClass : buttonClass(false)}`} 
             onClick={() => setActiveTab('dataEntry')}
@@ -87,6 +89,11 @@ const buttonActiveClass = `
           <button 
             className={`${buttonClass(activeTab !== 'result')}`} 
             disabled={activeTab !== 'result'}
+            onClick={() => {
+              if(activeTab === 'result') {
+                printArea()
+              }
+            }}
           >
             Print
           </button>

@@ -1,7 +1,9 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
+import { PluginAPI } from "tailwindcss/types/config";
 
 const config: Config = {
-  darkMode: "selector",
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -55,6 +57,16 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  // variants: {
+  //   extend: {
+  //     backgroundColor: ["dark", "print"],
+  //     textColor: ["dark", "print"],
+  //   },
+  // },
+  plugins: [
+    plugin(function ({ addVariant }) {
+      addVariant("dark", "@media not print { .dark & }");
+    }),
+  ],
 };
 export default config;

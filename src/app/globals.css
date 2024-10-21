@@ -5,15 +5,10 @@
 :root {
   --background: #e7e7e7;
   --foreground: #141414;
-
-  /* --clr-good: lime;
-  --clr-warning: orange;
-  --clr-failure: red; */
 }
 .dark {
   --background: #141414;
-  --foreground: #f6f6f6;
-  --primary: 255;
+  --foreground: #ebebeb;
 }
 
 body {
@@ -31,5 +26,45 @@ h3 {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@media print {
+  :root {
+    --background: #fff;
+    --foreground: #141414;
+  }
+  /* .dark {
+    background-color: white !important;
+    color: black !important;
+    --background: #e7e7e7;
+    --foreground: #141414;
+  } */
+
+  html,
+  body {
+    background-color: white !important;
+  }
+
+  body * {
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    visibility: hidden;
+  }
+
+  #printable,
+  #printable * {
+    visibility: visible;
+  }
+
+  #printable {
+    background: white;
+    left: 0;
+    padding: 0;
+    position: absolute;
+    text-align: left;
+    top: 0;
   }
 }
