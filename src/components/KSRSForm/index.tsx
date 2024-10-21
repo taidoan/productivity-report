@@ -18,18 +18,20 @@ const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
   const [prodData, setProdData] = useState<string>('');
   const [copiedServiceData, setCopiedServiceData] = useState<string>('');
   const [copiedProdData, setCopiedProdData] = useState<string>('');
-
   useEffect(() => {
-    setSales(initialValues.sales);
-    setSalesTarget(initialValues.salesTarget);
-    setLateTarget(initialValues.lateTarget);
-    setPrepTarget(initialValues.prepTarget);
-    setLift(initialValues.foodLift);
-    setServiceData(initialValues.copiedServiceData),
-    setProdData(initialValues.copiedProdData)
-  }, [initialValues])
-
-
+    if (initialValues) {
+      setSales(initialValues.sales);
+      setSalesTarget(initialValues.salesTarget);
+      setLateTarget(initialValues.lateTarget);
+      setPrepTarget(initialValues.prepTarget);
+      setLift(initialValues.foodLift);
+      setServiceData(initialValues.copiedServiceData);
+      setProdData(initialValues.copiedProdData);
+      setCopiedServiceData(initialValues.copiedServiceData);
+      setCopiedProdData(initialValues.copiedProdData);
+    }
+  }, [initialValues]); 
+  
   const handleSalesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSales(value ? Number(value) : null);
@@ -53,13 +55,15 @@ const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
   };
 
   const handleServiceChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setServiceData(event.target.value);
-    setCopiedServiceData(event.target.value)
+    const value = event.target.value;
+    setCopiedServiceData(value);
+    setServiceData(value);
   };
-
+  
   const handleProdChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setProdData(event.target.value);
-    setCopiedProdData(event.target.value)
+    const value = event.target.value;
+    setCopiedProdData(value);
+    setProdData(value);
   };
 
   const parseServiceSummaryData = (data: string): ServiceSummary => {
@@ -336,17 +340,23 @@ const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
     const parsedServiceSummary = parseServiceSummaryData(serviceData);
     const parsedProductivityData = parseProductivityData(prodData)
     onSubmit([sales, salesTarget, lateTarget, prepTarget, lift, parsedServiceSummary, parsedProductivityData, copiedServiceData, copiedProdData]);
+    console.log(copiedServiceData)
+    console.log(copiedProdData)
   };
 
   const formFieldClass = `rounded-lg bg-grey-100 p-4 px-4 grow flex flex-col gap-2 gap-y-3 dark:bg-grey-700`
-  const labelClass = `font-bold leading-4 content-center`
-  const fieldClass = `rounded-lg p-3 py-2 shadow-md text-grey-600 dark:bg-grey-900 dark:shadow-none dark:text-grey-200 placeholder:text-grey-300 dark:placeholder:text-grey-400 focus:outline-2 focus:outline-primary-600 focus:ring-inset focus:outline-none focus:shadow-none focus:outline-offset-0 dark:focus:outline-primary-400`
+  const labelClass = `font-bold leading-4 content-center text-left`
+  const fieldClass = `rounded-lg p-3 py-3 shadow-md text-grey-600 dark:bg-grey-900 dark:shadow-none dark:text-grey-200 placeholder:text-grey-300 dark:placeholder:text-grey-400 focus:outline-2 focus:outline-primary-600 focus:ring-inset focus:outline-none focus:shadow-none focus:outline-offset-0 `
 
   return (
     <div className={``}>
+        <p className="text-center mt-0 mb-4">
+          Please set your targets, select optional information and enter data{" "}
+          <strong>copied directly</strong> KSRS into the boxes below.
+        </p>
       <form onSubmit={handleSubmit} className={`flex flex-wrap gap-4 md:grid grid-cols-4`}>
       <div className={`${formFieldClass} col-span-2`}>
-        <label htmlFor="salesTarget" className={`${labelClass}`}>Sales Target:</label>
+        <label htmlFor="salesTarget" className={`${labelClass}`}>Sales Forecast: <span className="text-sm font-normal text-grey-400">(Optional)</span></label>
         <input 
           type="number"
           id="salesTarget"
@@ -357,7 +367,7 @@ const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
       </div>
 
       <div className={`${formFieldClass} col-span-2`}>
-        <label htmlFor="actualSales" className={`${labelClass}`}>Actual Sales:</label>
+        <label htmlFor="actualSales" className={`${labelClass}`}>Actual Sales: <span className="text-sm font-normal text-grey-400">(Optional)</span></label>
         <input 
           type="number"
           id="actualSales"
@@ -368,8 +378,8 @@ const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
       </div>
 
       <div className={`flex flex-col gap-4 flex-wrap w-full md:flex-row md:col-span-4`}>
-        <div className={`${formFieldClass} !flex-row gap-x-3`}>
-          <label htmlFor="latesTarget" className={`${labelClass}`}>Lates Target:</label>
+        <div className={`${formFieldClass} gap-x-3`}>
+          <label htmlFor="latesTarget" className={`${labelClass}`}>Lates Target: <span className="text-sm font-normal text-grey-400">(Required<span className="text-red-600">*</span>)</span></label>
           <select value={lateTarget} id="latesTarget" onChange={handleLatesChange} className={`${fieldClass} grow`}>
             <option value={10}>10%</option>
             <option value={15}>15%</option>
@@ -379,8 +389,8 @@ const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
           </select>
         </div>
 
-        <div className={`${formFieldClass} !flex-row gap-x-3`}>
-          <label htmlFor="prepTarget" className={`${labelClass}`}>Prep Target:</label>
+        <div className={`${formFieldClass}  gap-x-3`}>
+          <label htmlFor="prepTarget" className={`${labelClass}`}>Prep Target: <span className="text-sm font-normal text-grey-400">(Required<span className="text-red-600">*</span>)</span></label>
           <select value={prepTarget} id="prepTarget" onChange={handlePrepChange} className={`${fieldClass} grow`}>
             <option value={6}>6:00</option>
             <option value={7}>7:00</option>
@@ -390,28 +400,28 @@ const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
         </div>
 
         <div className={`${formFieldClass} !flex-row gap-x-3 justify-center`}>
-          <label htmlFor="foodLift" className={`${labelClass}`}>Food Lift:</label>
+          <label htmlFor="foodLift" className={`${labelClass}`}>Food Lift: <span className="text-sm font-normal text-grey-400">(Optional)</span></label>
           <input 
             type="checkbox"
             id="foodLift"
             checked={lift} 
             onChange={handleLiftChange}
-            className="dark:accent-primary-400 dark:focus:accent-primary-400 accent-primary-600 focus:accent-primary-600"
+            className="accent-primary-600 focus:accent-primary-600"
           />
         </div>
       </div>
 
       <div className={`${formFieldClass} col-span-4`}>
-        <label htmlFor="serviceSummaryData" className={`${labelClass}`}>Service Summary Data:</label>
+        <label htmlFor="serviceSummaryData" className={`${labelClass}`}>Service Summary Data: <span className="text-sm font-normal text-grey-400">(Required<span className="text-red-600">*</span>)</span></label>
         <textarea id="serviceSummaryData" value={serviceData} onChange={handleServiceChange} rows={13} placeholder="Copy and paste the service summary report here" className={`${fieldClass}`}></textarea>
       </div>
 
       <div className={`${formFieldClass} col-span-4`}>
-        <label htmlFor="prodData" className={`${labelClass}`}>Productivity Data:</label>
+        <label htmlFor="prodData" className={`${labelClass}`}>Productivity Data: <span className="text-sm font-normal text-grey-400">(Required<span className="text-red-600">*</span>)</span></label>
         <textarea id="prodData" value={prodData} onChange={handleProdChange} placeholder="Copy and paste productivity report here" rows={6}className={`${fieldClass}`}></textarea>        
       </div>
 
-      <button type="submit" className="bg-primary-600 text-white rounded-lg">Submit</button>
+      <button type="submit" className="font-bold rounded-lg px-5 py-3 text-grey-500 bg-grey-100 hover:bg-slate-600 ease-in-out duration-300 hover:text-white mx-auto block full-width col-span-4 my-2 dark:bg-grey-500 dark:text-grey-900 dark:hover:bg-primary-600">Submit</button>
     </form>
     </div>
   );
