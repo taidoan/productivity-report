@@ -31,7 +31,6 @@ export default function Home() {
     setFormData(data);
     setFormSubmitted(true);
     setActiveTab('result');
-    console.log(data)
   };
 
   const [

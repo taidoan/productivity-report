@@ -348,8 +348,6 @@ const KSRSForm = ({ onSubmit, initialValues}: KSRSFormProps) => {
     const parsedServiceSummary = parseServiceSummaryData(serviceData);
     const parsedProductivityData = parseProductivityData(prodData)
     onSubmit([sales, salesTarget, lateTarget, prepTarget, lift, parsedServiceSummary, parsedProductivityData, copiedServiceData, copiedProdData]);
-    console.log(copiedServiceData)
-    console.log(copiedProdData)
   };
 
   const formFieldClass = `rounded-lg bg-grey-100 p-4 px-4 grow flex flex-col gap-2 gap-y-3 dark:bg-grey-700`
