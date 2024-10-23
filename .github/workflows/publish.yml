@@ -1,12 +1,34 @@
-name: Generate a build and push to another branch
+name: CI/CD Workflow
 
 on:
   push:
     branches:
-      - main # The branch name your are commit the new changes
+      - develop
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
 
 jobs:
-  build:
+  # Job for develop branch (e.g., run tests but do not build)
+  test-develop:
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    name: Test on Develop
+    steps:
+      - name: git-checkout
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
+  # Job for when PR is merged into main (build and push)
+  build-and-push:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Build and Push
     steps:
@@ -25,5 +47,5 @@ jobs:
           REPO: self
           BRANCH: build # The branch name where you want to push the assets
           FOLDER: out # The directory where your assets are generated
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "Build: ({sha}) {msg}" # The commit message

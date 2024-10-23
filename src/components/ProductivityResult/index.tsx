@@ -101,33 +101,36 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
       <hr className="border-grey-300 dark:border-grey-500 hidden lg:block mb-2 xl:mb-3" />
       <ul>{keys}</ul>
     </div>
-  )
-
+  );
+  
   const prepKeys = renderPerformanceKeys("Prep Time", [
-    <li>{hitTargetKey} {prepTarget} minutes or under prep time.</li>,
+    <li key="prep-target-0">{hitTargetKey} {prepTarget} minutes or under prep time.</li>,
     prepTarget === 9
-      ? <li>{failedTargetKey} Over {prepTarget} minutes prep time.</li>
+      ? <li key="prep-failed-1">{failedTargetKey} Over {prepTarget} minutes prep time.</li>
       : <>
-        <li>{overTargetKey} Under {prepTarget + 1} minutes prep time.</li>
-        <li>{failedTargetKey} Over {prepTarget + 1} minutes prep time.</li>
+        <li key="prep-under-2">{overTargetKey} Under {prepTarget + 1} minutes prep time.</li>
+        <li key="prep-failed-under-3">{failedTargetKey} Over {prepTarget + 1} minutes prep time.</li>
       </>
-  ])
-
+  ]);
+  
   const waitKeys = renderPerformanceKeys("Wait Time", [
-    <li>{hitTargetKey} {foodLift ? "1:30" : "1:00"} minutes or under wait time.</li>,
-    <li>{failedTargetKey} Over {foodLift ? "1:30" : "1:00"} minutes wait time.</li>
-  ])
-
+    <li key="wait-target-0">{hitTargetKey} {foodLift ? "1:30" : "1:00"} minutes or under wait time.</li>,
+    <li key="wait-failed-1">{failedTargetKey} Over {foodLift ? "1:30" : "1:00"} minutes wait time.</li>
+  ]);
+  
   const deliveryKeys = renderPerformanceKeys("Delivery Time", [
-    <li>{hitTargetKey} Under 10 minutes delivery.</li>,
-    <li>{failedTargetKey} Over 10 minutes delivery.</li>,
+    <li key="delivery-hit-0">{hitTargetKey} Under 10 minutes delivery.</li>,
+    <li key="delivery-failed-1">{failedTargetKey} Over 10 minutes delivery.</li>,
   ]);
-
+  
   const latesKeys = renderPerformanceKeys("Late Orders", [
-    <li>{hitTargetKey} {lateTarget}% or under late orders.</li>,
-    <li>{overTargetKey} Over {lateTarget}% late orders.</li>,
-    <li>{failedTargetKey} Over {lateTarget + 10}% late orders.</li>,
+    <li key="late-hit-0">{hitTargetKey} {lateTarget}% or under late orders.</li>,
+    <li key="late-over-1">{overTargetKey} Over {lateTarget}% late orders.</li>,
+    <li key="late-failed-2">{failedTargetKey} Over {lateTarget + 10}% late orders.</li>,
   ]);
+  
+  
+  
   
   return (
     <div id="printable">
