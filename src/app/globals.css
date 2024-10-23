@@ -34,12 +34,6 @@ h3 {
     --background: #fff;
     --foreground: #141414;
   }
-  /* .dark {
-    background-color: white !important;
-    color: black !important;
-    --background: #e7e7e7;
-    --foreground: #141414;
-  } */
 
   html,
   body {

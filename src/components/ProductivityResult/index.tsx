@@ -11,14 +11,13 @@ type ProductivityResultProps = {
 }
 
 const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLift, serviceSummary, productivity}: ProductivityResultProps) => {
-  const darkHeaderBg = 'dark:bg-grey-950'
+  const darkHeaderBg = 'dark:bg-grey-950 print:bg-black print:dark:bg-black'
   const darkCellBg = 'dark:bg-grey-900 print:dark:bg-white'
-
-  const border = `border-2 border-slate-800 border-collapse dark:border-grey-950`
+  const border = `border-2 border-slate-800 border-collapse dark:border-grey-950 print:border-black print:dark:border-black`
   const dataClass = 'p-2 px-3'
 
   const darkHeaderClasses = darkHeaderBg
-  const headerClasses = `bg-slate-800 text-white font-bold p-2 px-3 ${darkHeaderClasses}`
+  const headerClasses = `bg-slate-800 text-white font-bold p-2 px-3 print:bg-black ${darkHeaderClasses}`
   const prodHeaderClasses = `${border} !border-4 p-2 px-3`
 
   const darkItemClass = `${darkCellBg} dark:text-gray-100`
@@ -37,6 +36,10 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
   const hitTargetColour = '!bg-lime-500 dark:!bg-lime-800 print:dark:!bg-lime-500 print:!bg-lime-500'
   const overTargetColour = '!bg-amber-400 dark:!bg-amber-600 print:dark:!bg-amber-400 print:!bg-amber-400'  
   const failedTargetColour = '!bg-red-500 dark:!bg-red-600 print:dark:!bg-red-500 print:!bg-red-500'
+
+  const hitTargetKey = (<span className={`${hitTargetColour} inline-block w-3 h-3 mr-2`}></span>);
+  const overTargetKey = (<span className={`${overTargetColour} inline-block w-3 h-3 mr-2`}></span>)
+  const failedTargetKey = (<span className={`${failedTargetColour} inline-block w-3 h-3 mr-2`}></span>)
 
   const getPrepTimeClass = (prepTime: string | undefined, prepTarget: number) => {
     const prepTimeValue = convertTimeToMinutes(prepTime || '0:00');
@@ -72,81 +75,62 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
   const serviceDeliveryTimeClass = getDeliveryTimeClass(serviceSummary?.averageDeliveryTime.total);
   const serviceLatesClass = getLatesClass(serviceSummary?.numberOfLateOrders.total.percentage, lateTarget)
 
-  const hitTargetKey = (<span className={`${hitTargetColour} inline-block w-3 h-3 mr-2`}></span>);
-  const overTargetKey = (<span className={`${overTargetColour} inline-block w-3 h-3 mr-2`}></span>)
-  const failedTargetKey = (<span className={`${failedTargetColour} inline-block w-3 h-3 mr-2`}></span>)
-
-  const renderPrepKeys = (target: number) => {
-    return(
-      <ul>
-        <li>{hitTargetKey} {target} minutes or under prep time.</li>
-        {target === 9 ? (
-        <li>{failedTargetKey} Over {target} minutes prep time.</li>
-        ) : (
-          <>
-            <li>{overTargetKey} Under {target + 1} minutes prep time.</li>
-            <li>{failedTargetKey}Over {target + 1} minutes prep time.</li>
-          </>
-        )}
-      </ul>
-    )
-  }
-
-  const renderWaitKeys = (lift: boolean) => {
-    const waitTime = lift ? '1:30' : '1:00'; 
-    return (
-      <ul>
-        <li>{hitTargetKey} {waitTime} minutes or under wait time.</li>
-        <li>{failedTargetKey} Over {waitTime} minutes wait time.</li>
-      </ul>
-    );
-  };
-
-  const renderDeliveryKeys = () => {
-    return (
-      <ul>
-        <li>{hitTargetKey} Under 10 minutes delivery.</li>
-        <li>{failedTargetKey} Over 10 minutes delivery.</li>
-      </ul>
-    )
-  }
-
-  const renderLatesKey = (target: number) => {
-    return (
-      <ul>
-        <li>{hitTargetKey} {target}% or under late orders.</li>
-        <li>{overTargetKey} Over {target}% late orders.</li>
-        <li>{failedTargetKey} Over {target + 10}% late orders.</li>
-      </ul>
-    )
-  }
-
   const renderSalesPerformance = (sales: number | null, salesTarget: number | null) => {
-    if (!sales) return null;
-  
-    if (salesTarget === null) return null; 
-  
-    const salesDifference = sales < salesTarget ? (salesTarget - sales) : (sales - salesTarget);
+    if (!sales || salesTarget === null) return null;
+
+    const salesDifference = Math.abs(salesTarget - sales);
     const percentageDifference = (salesDifference / salesTarget * 100).toFixed(2);
     const isBelowTarget = sales < salesTarget;
-  
     const percentageClass = isBelowTarget ? 'text-red-500' : 'dark:text-lime-500 text-lime-700';
   
     return (
       <p>
         We&apos;ve taken <span className="font-bold">£{sales}</span> in food sales this week.
-        This was £{Math.abs(salesDifference)}
+        This was £{salesDifference}
         <span className={`text-sm ${percentageClass}`}>
           {isBelowTarget ? ` (-${percentageDifference}%)` : ` (+${percentageDifference}%)`}
         </span>
-        {isBelowTarget ? (
-          <> below target of <strong>£{salesTarget}</strong>.</>
-        ) : (
-          <> above target of <strong>£{salesTarget}</strong>.</>
-        )}
+        {isBelowTarget ? "below" : "above"} the target of <strong>£{salesTarget}</strong>.
       </p>
     );
   };
+
+  const renderPerformanceKeys = (label: string, keys: JSX.Element[]) => (
+    <div className="rounded-xl grow content-center xl:content-start lg:text-left bg-grey-50 shadow-md p-4 px-5 dark:bg-grey-700 dark:shadow-md print:!shadow-none print:!bg-white print:!p-0 print:content-start">
+      <h2 className="uppercase text-2xl font-bold mb-1 xl:mb-2">{label}</h2>
+      <hr className="border-grey-300 dark:border-grey-500 hidden lg:block mb-2 xl:mb-3" />
+      <ul>{keys}</ul>
+    </div>
+  );
+  
+  const prepKeys = renderPerformanceKeys("Prep Time", [
+    <li key="prep-target-0">{hitTargetKey} {prepTarget} minutes or under prep time.</li>,
+    prepTarget === 9
+      ? <li key="prep-failed-1">{failedTargetKey} Over {prepTarget} minutes prep time.</li>
+      : <>
+        <li key="prep-under-2">{overTargetKey} Under {prepTarget + 1} minutes prep time.</li>
+        <li key="prep-failed-under-3">{failedTargetKey} Over {prepTarget + 1} minutes prep time.</li>
+      </>
+  ]);
+  
+  const waitKeys = renderPerformanceKeys("Wait Time", [
+    <li key="wait-target-0">{hitTargetKey} {foodLift ? "1:30" : "1:00"} minutes or under wait time.</li>,
+    <li key="wait-failed-1">{failedTargetKey} Over {foodLift ? "1:30" : "1:00"} minutes wait time.</li>
+  ]);
+  
+  const deliveryKeys = renderPerformanceKeys("Delivery Time", [
+    <li key="delivery-hit-0">{hitTargetKey} Under 10 minutes delivery.</li>,
+    <li key="delivery-failed-1">{failedTargetKey} Over 10 minutes delivery.</li>,
+  ]);
+  
+  const latesKeys = renderPerformanceKeys("Late Orders", [
+    <li key="late-hit-0">{hitTargetKey} {lateTarget}% or under late orders.</li>,
+    <li key="late-over-1">{overTargetKey} Over {lateTarget}% late orders.</li>,
+    <li key="late-failed-2">{failedTargetKey} Over {lateTarget + 10}% late orders.</li>,
+  ]);
+  
+  
+  
   
   return (
     <div id="printable">
@@ -217,26 +201,10 @@ const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLif
         <p>The floor team requires at least {foodLift ? (<><strong>1:30</strong> minutes</>) : (<><strong>1:00</strong> minute</>)} to deliver food sent from kitchen.</p>
       </div>
       <div className="flex flex-wrap lg:grid lg:grid-cols-2 xl:grid-cols-4 gap-4 print:flex">
-        <div className="rounded-xl grow content-center print:content-start xl:content-start lg:text-left bg-grey-50 shadow-md p-4 px-5 dark:bg-grey-700 dark:shadow-md print:!shadow-none print:!bg-white print:!p-0">
-          <h2 className="uppercase text-2xl font-bold mb-1 xl:mb-2">Prep Time</h2>
-          <hr className="border-grey-300 dark:border-grey-500 hidden lg:block mb-2 xl:mb-3" />
-          {renderPrepKeys(prepTarget)}
-        </div>
-        <div className="rounded-xl grow content-center print:content-start xl:content-start lg:text-left bg-grey-50 shadow-md p-4 px-5 dark:bg-grey-700 dark:shadow-md print:!shadow-none print:!bg-white print:!p-0">
-          <h2 className="uppercase text-2xl font-bold mb-1 xl:mb-2">Wait Time</h2>
-          <hr className="border-grey-300 dark:border-grey-500 hidden lg:block mb-2 xl:mb-3" />
-          {renderWaitKeys(foodLift)}
-        </div>
-        <div className="rounded-xl grow content-center print:content-start xl:content-start lg:text-left bg-grey-50 shadow-md p-4 px-5 dark:bg-grey-700 dark:shadow-md print:!shadow-none print:!bg-white print:!p-0">
-          <h2 className="uppercase text-2xl font-bold mb-1 xl:mb-2">Delivery Time</h2>
-          <hr className="border-grey-300 dark:border-grey-500 hidden lg:block mb-2 xl:mb-3" />
-          {renderDeliveryKeys()}
-        </div>
-        <div className="rounded-xl grow content-center print:content-start xl:content-start lg:text-left bg-grey-50 shadow-md p-4 px-5 dark:bg-grey-700 dark:shadow-md print:!shadow-none print:!bg-white print:!p-0">
-          <h2 className="uppercase text-2xl font-bold mb-1 xl:mb-2">Late Orders</h2>
-          <hr className="border-grey-300 dark:border-grey-500 hidden lg:block mb-2 xl:mb-3" />
-          {renderLatesKey(lateTarget)}
-        </div>
+        {prepKeys}
+        {waitKeys}
+        {deliveryKeys}
+        {latesKeys} 
       </div>
     </div>
   )

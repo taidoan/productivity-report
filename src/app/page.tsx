@@ -62,9 +62,6 @@ const buttonActiveClass = `
   !bg-gradient-to-t !from-primary-500 !to-primary-700 !border-primary-500 
   dark:!from-primary-700 dark:!to-primary-900 dark:!border-primary-700
 `;
-
-
-
   return (
     <div className={`w-10/12 lg:w-11/12 xl:w-4/6 mx-auto print:w-full print:!bg-white print:mx-0 ${roboto.variable} ${oswald.variable}`}>
       <Header />
