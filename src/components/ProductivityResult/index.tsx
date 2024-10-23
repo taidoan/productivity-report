@@ -11,14 +11,14 @@ type ProductivityResultProps = {
 }
 
 const ProductivityResult = ({sales, salesTarget, lateTarget, prepTarget, foodLift, serviceSummary, productivity}: ProductivityResultProps) => {
-  const darkHeaderBg = 'dark:bg-grey-950'
+  const darkHeaderBg = 'dark:bg-grey-950 print:bg-black print:dark:bg-black'
   const darkCellBg = 'dark:bg-grey-900 print:dark:bg-white'
 
-  const border = `border-2 border-slate-800 border-collapse dark:border-grey-950`
+  const border = `border-2 border-slate-800 border-collapse dark:border-grey-950 print:border-black print:dark:border-black`
   const dataClass = 'p-2 px-3'
 
   const darkHeaderClasses = darkHeaderBg
-  const headerClasses = `bg-slate-800 text-white font-bold p-2 px-3 ${darkHeaderClasses}`
+  const headerClasses = `bg-slate-800 text-white font-bold p-2 px-3 print:bg-black ${darkHeaderClasses}`
   const prodHeaderClasses = `${border} !border-4 p-2 px-3`
 
   const darkItemClass = `${darkCellBg} dark:text-gray-100`
